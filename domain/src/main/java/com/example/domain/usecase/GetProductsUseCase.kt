@@ -10,7 +10,7 @@ class GetProductsUseCase @Inject constructor(
     private val productRepository: ProductRepository
 ) : UseCase<Unit, List<BeveragePack>> {
 
-    override fun invoke(params: Unit): Flow<List<BeveragePack>> {
+    override suspend fun invoke(params: Unit): Flow<List<BeveragePack>> {
         return productRepository.getProducts()
     }
 }

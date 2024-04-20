@@ -6,5 +6,6 @@
     <color name="text_dark">#191919</color>
     <color name="text_secondary">#697488</color>
     <color name="grey_tint">#BDBDBD</color>
+    <color name="const_bg">#F2F0FA</color>
 
 </resources>

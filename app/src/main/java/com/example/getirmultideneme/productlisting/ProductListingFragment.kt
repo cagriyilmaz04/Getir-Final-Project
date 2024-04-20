@@ -6,9 +6,11 @@ import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.data.models.BeveragePack
 import com.example.getirmultideneme.ProductsViewModel
+import com.example.getirmultideneme.R
 import com.example.getirmultideneme.databinding.FragmentProductListingBinding
 import com.example.presentation.base.util.Resource
 import dagger.hilt.android.AndroidEntryPoint
@@ -27,6 +29,9 @@ class ProductListingFragment : BaseFragment<FragmentProductListingBinding>(
         super.onViewCreated(view, savedInstanceState)
         setupRecyclerView()
         observeProducts()
+        binding.imageBasket.setOnClickListener {
+            findNavController().navigate(R.id.action_productListingFragment_to_shoppingCartFragment)
+        }
         }
 
     private fun setupRecyclerView() {

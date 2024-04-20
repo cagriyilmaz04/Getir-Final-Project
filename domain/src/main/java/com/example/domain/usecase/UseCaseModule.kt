@@ -1,7 +1,6 @@
 package com.example.domain.usecase
 
-import com.example.data.repository.ProductRepository
-import com.example.domain.GetProductsUseCase
+import com.example.data.repository.LocalProductRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -14,7 +13,7 @@ object UseCaseModule {
 
     @Provides
     @Singleton
-    fun provideGetProductsUseCase(productRepository: ProductRepository): GetProductsUseCase {
-        return GetProductsUseCase(productRepository)
+    fun provideGetLocalProductsUseCase(localProductRepository: LocalProductRepository): GetLocalProductsUseCase {
+        return GetLocalProductsUseCase(localProductRepository)
     }
 }

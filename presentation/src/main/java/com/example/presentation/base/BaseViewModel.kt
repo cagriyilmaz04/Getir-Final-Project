@@ -13,4 +13,5 @@ open class BaseViewModel<T> : ViewModel() {
     protected fun postState(newState: Resource<T>) {
         _state.value = newState
     }
+
 }

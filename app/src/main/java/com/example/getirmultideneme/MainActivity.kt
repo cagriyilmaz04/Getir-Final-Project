@@ -1,7 +1,9 @@
 package com.example.getirmultideneme
 
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
+import android.view.Window
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -21,6 +23,13 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        // Set the status bar color
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            window.statusBarColor = resources.getColor(R.color.text_primary, theme)
+        }
+
 
     }
-}
+
+
+    }
