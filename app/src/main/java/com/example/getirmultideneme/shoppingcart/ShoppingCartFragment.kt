@@ -51,6 +51,7 @@ class ShoppingCartFragment : BaseFragment<FragmentShoppingCartBinding>(FragmentS
                     is Resource.Success -> {
                         shoppingCartAdapter.products = resource.data
                         shoppingCartAdapter.notifyDataSetChanged()
+
                     }
 
                     is Resource.Error -> {

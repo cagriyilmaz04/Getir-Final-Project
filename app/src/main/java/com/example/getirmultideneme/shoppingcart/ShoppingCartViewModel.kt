@@ -39,7 +39,7 @@ class ShoppingCartViewModel@Inject constructor(
         viewModelScope.launch {
             try {
                 repository.increaseProductQuantity(product.productId, 1)
-                loadProducts()  // Reload the products to update the UI
+                loadProducts()
             } catch (e: Exception) {
                 postState(Resource.Error("Failed to increase quantity: ${e.localizedMessage}"))
             }
@@ -51,12 +51,12 @@ class ShoppingCartViewModel@Inject constructor(
             if (product.quantity > 1) {
                 try {
                     repository.decreaseProductQuantity(product.productId, 1)
-                    loadProducts()  // Reload the products to update the UI
+                    loadProducts()
                 } catch (e: Exception) {
                     postState(Resource.Error("Failed to decrease quantity: ${e.localizedMessage}"))
                 }
             } else {
-                deleteProduct(product)  // If quantity is 1, delete the product
+                deleteProduct(product)
             }
         }
     }
@@ -65,18 +65,20 @@ class ShoppingCartViewModel@Inject constructor(
         viewModelScope.launch {
             try {
                 repository.deleteProduct(product.productId)
-                loadProducts()  // Reload the products to update the UI
+                loadProducts()
+                postState(Resource.Success<List<ProductEntity>>(listOf()))
             } catch (e: Exception) {
                 postState(Resource.Error("Failed to delete product: ${e.localizedMessage}"))
             }
         }
     }
 
+
     fun deleteAllProducts() {
         viewModelScope.launch {
             try {
                 repository.deleteAllProducts()
-                postState(Resource.Success(emptyList()))  // Post empty list to update UI
+                postState(Resource.Success(emptyList()))
             } catch (e: Exception) {
                 postState(Resource.Error("Failed to delete all products: ${e.localizedMessage}"))
             }
