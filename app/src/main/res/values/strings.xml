@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Getir Multi Deneme</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="_0_00_tl">0.00 tl</string>
+    <string name="product_name">Product Name</string>
+    <string name="attribute">Attribute</string>
+</resources>

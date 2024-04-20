@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="button" parent="Base.Widget.AppCompat.Button">
+        <item name="android:background">@drawable/button</item>
+
+    </style>
+
+    <style name="button_main" parent="Widget.AppCompat.Button">
+        <item name="android:background">@color/text_primary</item>
+        <item name="android:textColor">@color/white</item>  <!-- Assuming you want white text -->
+        <item name="android:textSize">18sp</item>
+
+    </style>
+
+</resources>
