@@ -9,7 +9,6 @@ import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.data.models.BeveragePack
-import com.example.getirmultideneme.ProductsViewModel
 import com.example.getirmultideneme.R
 import com.example.getirmultideneme.databinding.FragmentProductListingBinding
 import com.example.presentation.base.util.Resource

@@ -15,7 +15,7 @@ class LocalProductRepository @Inject constructor(private val productDao: Product
         productDao.insert(product)
     }
 
-    suspend fun deleteWholeProduct() {
+    suspend fun deleteAllProducts() {
         productDao.deleteAllProducts()
     }
     suspend fun increaseProductQuantity(productId: String, amount: Int) {

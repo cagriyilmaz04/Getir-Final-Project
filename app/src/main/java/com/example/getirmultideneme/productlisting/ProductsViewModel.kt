@@ -1,4 +1,4 @@
-package com.example.getirmultideneme
+package com.example.getirmultideneme.productlisting
 
 import androidx.lifecycle.viewModelScope
 import com.example.data.models.BeveragePack
