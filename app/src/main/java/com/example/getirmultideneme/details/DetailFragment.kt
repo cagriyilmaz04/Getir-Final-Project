@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.view.animation.AnimationUtils
+import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
@@ -35,7 +36,18 @@ class DetailFragment : BaseFragment<FragmentDetailBinding>(FragmentDetailBinding
         arguments?.let {
             val product = DetailFragmentArgs.fromBundle(it).product
             binding.apply {
-                Glide.with(requireContext()).load(product.imageURL).into(imageProduct)
+                var image = ""
+
+                if(product.imageURL!=null){
+                    Toast.makeText(requireContext(),"Burada",Toast.LENGTH_LONG).show()
+                    image += product.imageURL
+
+                }else{
+                    Toast.makeText(requireContext(),"Girdi",Toast.LENGTH_LONG).show()
+                    image += product.thumbnailURL
+                }
+                Toast.makeText(requireContext(),image.toString(),Toast.LENGTH_LONG).show()
+                Glide.with(requireContext()).load(image).into(imageProduct)
                 textProductPrice.text = product.priceText.toString()
                 textProductName.text = product.name.toString()
                 if(product.attribute.isNullOrEmpty()){
@@ -56,7 +68,7 @@ class DetailFragment : BaseFragment<FragmentDetailBinding>(FragmentDetailBinding
                     attribute = productArgs.attribute,
                     thumbnailURL = productArgs.thumbnailURL,
                     price = productArgs.price,
-                    imageURL = productArgs.imageURL,
+                    imageURL = productArgs.imageURL!!,
                     description = productArgs.description,
                     quantity = binding.textQuantity.text.toString().toInt()
                 )

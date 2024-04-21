@@ -12,10 +12,13 @@ import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.example.data.models.BeveragePack
 import com.example.data.models.Product
+import com.example.getirmultideneme.R
 import com.example.getirmultideneme.databinding.RecylerRowBinding
 
 
-class ProductAdapter(private var products: List<BeveragePack>, val context: Context, private val navController: NavController) : RecyclerView.Adapter<ProductAdapter.ProductViewHolder>() {
+class ProductAdapter(private var products: List<BeveragePack>,
+                     val context: Context,
+                     private val navController: NavController) : RecyclerView.Adapter<ProductAdapter.ProductViewHolder>() {
 
     fun updateData(newProducts: List<BeveragePack>) {
         products = newProducts
@@ -49,8 +52,8 @@ class ProductAdapter(private var products: List<BeveragePack>, val context: Cont
             binding.apply {
                 textViewProductName.text = product.name
                 textViewProductAttribute.text = product.attribute
-                textViewProductPrice.text = product.priceText
-                Glide.with(itemView.context).load(product.imageURL).transform(CenterCrop(), RoundedCorners(8)).into(imageViewProduct)
+                textViewProductPrice.text = String.format("${context.getString(R.string.turkish_lira)}"+"%.2f", product.price)
+                Glide.with(itemView.context).load(product.imageURL).into(imageViewProduct)
 
                 imageViewAddToCart.setOnClickListener {
 

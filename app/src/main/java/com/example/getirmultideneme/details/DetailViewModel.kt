@@ -58,13 +58,11 @@ class DetailViewModel @Inject constructor(
     }
 
     fun deleteProductFromCart() {
-
         product?.let {
             viewModelScope.launch {
                 try {
                     repository.deleteProduct(it.productId)
-                    Log.e("TAG","çAĞRI YILMAZ")
-                    product = null  // Reset product after deletion
+                    product = null
                     postState(Resource.Success(it))
                 } catch (e: Exception) {
                     postState(Resource.Error("Failed to delete product from cart", e))

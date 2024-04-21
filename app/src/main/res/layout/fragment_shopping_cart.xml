@@ -128,15 +128,5 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/recyclerViewLocal" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvSuggestedProducts"
-        android:layout_width="0dp"
-        android:layout_height="240dp"
-        android:background="@color/white"
-        app:layout_constraintBottom_toTopOf="@+id/linearLayout"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textSuggestedProduct"
-        app:layout_constraintVertical_bias="0.068" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

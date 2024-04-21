@@ -1,6 +1,7 @@
 package com.example.getirmultideneme.shoppingcart
 
 import androidx.lifecycle.viewModelScope
+import com.example.data.models.BeveragePack
 import com.example.data.models.BeverageSuggestedPack
 import com.example.data.models.ProductEntity
 import com.example.data.models.SuggestedProduct
@@ -26,13 +27,11 @@ class ShoppingCartViewModel @Inject constructor(
     private val _products = MutableStateFlow<Resource<List<ProductEntity>>>(Resource.Loading())
     val products: StateFlow<Resource<List<ProductEntity>>> = _products.asStateFlow()
 
-    private val _suggestedProducts = MutableStateFlow<Resource<List<BeverageSuggestedPack>>>(Resource.Loading())
-    val suggestedProducts: StateFlow<Resource<List<BeverageSuggestedPack>>> = _suggestedProducts.asStateFlow()
 
 
     init {
         loadProducts()
-        loadSuggestedProducts()
+
     }
 
     private fun loadProducts() {
@@ -52,18 +51,6 @@ class ShoppingCartViewModel @Inject constructor(
         }
     }
 
-
-    private fun loadSuggestedProducts() {
-        viewModelScope.launch {
-            apiRepository.getSuggestedProducts().collect { suggestedProducts ->
-                if (suggestedProducts.isNotEmpty()) {
-                    _suggestedProducts.value = Resource.Success(suggestedProducts)
-                } else {
-                    _suggestedProducts.value = Resource.Error("No suggested products available")
-                }
-            }
-        }
-    }
 
     fun increaseQuantity(product: ProductEntity) {
         viewModelScope.launch {

@@ -5,22 +5,20 @@ import android.view.View
 import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
-import com.example.data.models.BeveragePack
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.getirmultideneme.R
 import com.example.getirmultideneme.databinding.FragmentProductListingBinding
+import com.example.getirmultideneme.shoppingcart.SuggestedProductAdapter
 import com.example.presentation.base.util.Resource
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import presentation.base.BaseFragment
 
+@Suppress("UNREACHABLE_CODE")
 @AndroidEntryPoint
-class ProductListingFragment : BaseFragment<FragmentProductListingBinding>(
-    FragmentProductListingBinding::inflate
-) {
-
+class ProductListingFragment : BaseFragment<FragmentProductListingBinding>(FragmentProductListingBinding::inflate) {
 
     private val viewModel: ProductsViewModel by viewModels()
 
@@ -28,16 +26,23 @@ class ProductListingFragment : BaseFragment<FragmentProductListingBinding>(
         super.onViewCreated(view, savedInstanceState)
         setupRecyclerView()
         observeProducts()
+
         binding.imageBasket.setOnClickListener {
             findNavController().navigate(R.id.action_productListingFragment_to_shoppingCartFragment)
         }
-        }
+    }
 
     private fun setupRecyclerView() {
+        val findNavigation = findNavController()
         binding.verticalRecyclerView.apply {
-            val data = ArrayList<BeveragePack>()
             layoutManager = GridLayoutManager(context, 3)
-            adapter = ProductAdapter(ArrayList(), requireContext(), findNavController())// Initially empty list
+            adapter = ProductAdapter(ArrayList(), requireContext(), findNavigation)
+        }
+
+
+        binding.rvSuggestedProducts.apply {
+            layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+            adapter = SuggestedProductAdapter(ArrayList(),requireContext(),findNavigation)
         }
     }
 
@@ -46,29 +51,35 @@ class ProductListingFragment : BaseFragment<FragmentProductListingBinding>(
             viewModel.state.collect { resource ->
                 when (resource) {
                     is Resource.Loading -> {
-                        binding.verticalRecyclerView.visibility = View.GONE
                     }
                     is Resource.Success -> {
-                        if (resource.data.isNullOrEmpty()) {
-                            Toast.makeText(context, "No products available.", Toast.LENGTH_LONG).show()
-                            binding.verticalRecyclerView.visibility = View.GONE
-                        } else {
-                            (binding.verticalRecyclerView.adapter as? ProductAdapter)?.updateData(resource.data)
-                            binding.verticalRecyclerView.visibility = View.VISIBLE
-                        }
+                        (binding.verticalRecyclerView.adapter as? ProductAdapter)?.updateData(resource.data)
                     }
                     is Resource.Error -> {
-                        Toast.makeText(context, "Error: ${resource.message}", Toast.LENGTH_LONG).show()
-                        binding.verticalRecyclerView.visibility = View.GONE // Hata durumunda görünürlüğü kapat
-                    }
 
-                    null -> {
+                    }
+                    else -> {
 
                     }
                 }
             }
         }
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.suggestedProducts.collect { resource ->
+                when (resource) {
+                    is Resource.Loading -> {
+
+                    }
+                    is Resource.Success -> {
+                        (binding.rvSuggestedProducts.adapter as? SuggestedProductAdapter)?.updateData(resource.data)
+                    }
+                    is Resource.Error -> {
+                        Toast.makeText(context, "Error loading suggested products: ${resource.message}", Toast.LENGTH_LONG).show()
+                    }
+                }
+            }
+        }
+
+
     }
-
-
 }

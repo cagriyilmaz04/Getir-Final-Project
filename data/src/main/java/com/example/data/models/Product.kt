@@ -19,7 +19,7 @@ data class Product(
     @SerializedName("priceText")
     val priceText:String,
     @SerializedName("imageURL")
-    val imageURL: String,
+    val imageURL: String? = null,
     @SerializedName("shortDescription")
     val description: String? = null
 ):Parcelable

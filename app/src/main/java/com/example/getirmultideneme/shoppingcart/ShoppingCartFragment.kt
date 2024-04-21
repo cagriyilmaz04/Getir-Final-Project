@@ -23,7 +23,7 @@ import kotlinx.coroutines.launch
 class ShoppingCartFragment : BaseFragment<FragmentShoppingCartBinding>(FragmentShoppingCartBinding::inflate) {
     private val viewModel: ShoppingCartViewModel by viewModels()
     private lateinit var shoppingCartAdapter: ShoppingCartAdapter
-    private lateinit var suggestedProductAdapter: SuggestedProductAdapter
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -41,17 +41,14 @@ class ShoppingCartFragment : BaseFragment<FragmentShoppingCartBinding>(FragmentS
 
     private fun setupRecyclerViews() {
         shoppingCartAdapter = ShoppingCartAdapter(listOf(), viewModel, requireContext())
-        suggestedProductAdapter = SuggestedProductAdapter(listOf())
+
 
         binding.recyclerViewLocal.apply {
             layoutManager = LinearLayoutManager(context)
             adapter = shoppingCartAdapter
         }
 
-        binding.rvSuggestedProducts.apply {
-            layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-            adapter = suggestedProductAdapter
-        }
+
     }
 
     @SuppressLint("NotifyDataSetChanged")
@@ -74,24 +71,6 @@ class ShoppingCartFragment : BaseFragment<FragmentShoppingCartBinding>(FragmentS
                 }
             }
         }
-            viewLifecycleOwner.lifecycleScope.launch {
-                viewModel.suggestedProducts.collect { resource ->
-
-                    when (resource) {
-                        is Resource.Loading -> {
-                            // Handle loading state for suggested products
-                        }
-                        is Resource.Success -> {
-                            suggestedProductAdapter.products = resource.data
-                            suggestedProductAdapter.notifyDataSetChanged()
-                        }
-                        is Resource.Error -> {
-                            // Handle error state for suggested products
-                        }
-                    }
-                }
-            }
-
 
     }
 
