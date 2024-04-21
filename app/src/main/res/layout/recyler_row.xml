@@ -1,69 +1,86 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="140dp"
+    android:layout_height="240dp"
     android:padding="8dp">  <!-- Padding for spacing around the elements -->
 
     <!-- RelativeLayout to hold the ImageView and Text Elements -->
     <RelativeLayout
         android:id="@+id/imageViewContainer"
         android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_centerHorizontal="true"
-    android:layout_marginTop="8dp">
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="8dp">
 
-    <!-- Product Image -->
-    <ImageView
-        android:id="@+id/imageViewProduct"
-        android:layout_width="120dp"
-        android:layout_height="120dp"
-        android:layout_alignParentStart="true" />
+        <!-- ConstraintLayout to hold the product image and add to cart icon -->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraintLayoutProductImage"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:background="@drawable/bg_last_product_image">
 
-    <!-- Add to Cart Button, positioned to float over the top right corner of the image -->
+            <!-- Product Image -->
+            <ImageView
+                android:id="@+id/imageViewProduct"
+                android:layout_width="108dp"
+                android:layout_height="108dp"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                />
+
+            <!-- Add to Cart Button, positioned to float over the top right corner of the image -->
+            <ImageView
+                android:id="@+id/imageViewAddToCart"
+                android:layout_width="12dp"
+                android:layout_height="12dp"
+                android:src="@drawable/add_button"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <!-- Product Price -->
-    <TextView
-        android:id="@+id/textViewProductPrice"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/imageViewProduct"
-        android:layout_alignStart="@id/imageViewProduct"
-        android:layout_marginTop="8dp"
-        android:fontFamily="@font/open_sans_semibold"
-        android:text="Product Price"
-        android:textColor="@color/text_primary" />
+        <TextView
+            android:id="@+id/textViewProductPrice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/constraintLayoutProductImage"
+            android:layout_alignStart="@id/constraintLayoutProductImage"
+            android:layout_marginTop="8dp"
+            android:fontFamily="@font/open_sans_bold"
+            android:text="Product Price"
+            android:textColor="@color/text_primary" />
 
-    <!-- Product Name -->
-    <TextView
-        android:id="@+id/textViewProductName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/textViewProductPrice"
-        android:layout_alignStart="@id/textViewProductPrice"
-        android:layout_marginTop="4dp"
-        android:text="Product Name"
-        android:textColor="@color/text_dark" />
+        <!-- Product Name -->
+        <TextView
+            android:id="@+id/textViewProductName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/textViewProductPrice"
+            android:layout_alignStart="@id/textViewProductPrice"
+            android:fontFamily="@font/open_sans_semibold"
+            android:layout_marginTop="4dp"
+            android:text="Product Name"
+            android:textColor="@color/text_dark"
+            android:singleLine="false"
+            android:maxLines="2"
+            android:ellipsize="end" />
 
-    <!-- Product Attribute -->
-    <TextView
-        android:id="@+id/textViewProductAttribute"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/textViewProductName"
-        android:layout_alignStart="@id/textViewProductName"
-        android:layout_marginTop="4dp"
-        android:text="Product Attribute"
-        android:textColor="@color/text_secondary" />
 
-</RelativeLayout>
+        <!-- Product Attribute -->
+        <TextView
+            android:id="@+id/textViewProductAttribute"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/textViewProductName"
+            android:layout_alignStart="@id/textViewProductName"
+            android:layout_marginTop="4dp"
+            android:text="Product Attribute"
+            android:textColor="@color/text_secondary" />
 
-    <ImageView
-        android:id="@+id/imageViewAddToCart"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_alignParentEnd="true"
-        android:layout_marginTop="-3dp"
-        android:layout_marginEnd="93dp"
-        android:src="@drawable/add_button" />
+    </RelativeLayout>
 
 </RelativeLayout>

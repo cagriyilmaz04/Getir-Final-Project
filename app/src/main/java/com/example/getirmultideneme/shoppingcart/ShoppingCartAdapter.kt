@@ -1,9 +1,14 @@
 package com.example.getirmultideneme.shoppingcart
 
+import android.content.Context
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.CenterCrop
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners
+import com.bumptech.glide.request.RequestOptions
 import com.example.data.models.ProductEntity
 import com.example.getirmultideneme.R
 import com.example.getirmultideneme.databinding.RecyclerRowBasketBinding
@@ -11,7 +16,8 @@ import com.example.getirmultideneme.databinding.RecyclerRowBasketBinding
 
 class ShoppingCartAdapter(
     var products: List<ProductEntity>,
-    private val viewModel: ShoppingCartViewModel
+    private val viewModel: ShoppingCartViewModel,
+    val context:Context
 ) : RecyclerView.Adapter<ShoppingCartAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -30,8 +36,13 @@ class ShoppingCartAdapter(
         fun bind(product: ProductEntity) {
             with(binding) {
                 textProductName.text = product.name
-                textProductAttribute.text = product.attribute ?: "N/A"
-                textProductPrice.text = String.format("$%.2f", product.price)
+                if(textProductAttribute.text.toString().isNullOrEmpty()){
+                    textProductAttribute.visibility = View.GONE
+                }else {
+                    textProductAttribute.text = product.attribute
+                }
+
+                textProductPrice.text = String.format("${context.getString(R.string.turkish_lira)}"+"%.2f", product.price)
                 textQuantity.text = product.quantity.toString()
                 Glide.with(imageProduct.context).load(product.imageURL).into(imageProduct)
 

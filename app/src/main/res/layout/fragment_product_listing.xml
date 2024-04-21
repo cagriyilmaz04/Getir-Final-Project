@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:background="@color/const_bg"
     android:layout_height="match_parent">
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout"
@@ -72,7 +73,7 @@
             android:id="@+id/textView2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Ürünler"
+            android:text="@string/products"
             android:textColor="@color/white"
             android:fontFamily="@font/open_sans_bold"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -89,7 +90,7 @@
         android:layout_width="match_parent"
         android:layout_height="200dp"
         android:layout_alignParentTop="true"
-        android:layout_marginBottom="64dp"
+        android:layout_marginTop="16dp"
         android:clipToPadding="false"
         android:orientation="horizontal"
         android:paddingStart="16dp"
@@ -97,12 +98,13 @@
         app:layout_constraintBottom_toTopOf="@+id/verticalRecyclerView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/verticalRecyclerView"
         android:layout_width="match_parent"
-        android:layout_height="400dp"
+        android:layout_height="430dp"
         android:layout_below="@id/horizontalRecyclerView"
         android:background="#FFFFFF"
         android:clipToPadding="false"

@@ -9,10 +9,12 @@ data class SuggestedProduct(
     val name: String,
     @SerializedName("price")
     val price: Double,
+    @SerializedName("attribute")
+    val attribute:String?=null,
     @SerializedName("priceText")
     val priceText:String,
     @SerializedName("imageURL")
-    val imageURL: String,
+    val imageURL: String?=null,
     @SerializedName("shortDescription")
     val shortDescription: String?=null,
     @SerializedName("unitPrice")

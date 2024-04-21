@@ -5,4 +5,9 @@
     <string name="_0_00_tl">0.00 tl</string>
     <string name="product_name">Product Name</string>
     <string name="attribute">Attribute</string>
+    <string name="button_complete">Siparişi Tamamla</string>
+    <string name="turkish_lira">₺</string>
+    <string name="products">Ürünler</string>
+    <string name="my_basket">Sepetim</string>
+    <string name="suggested_product">Önerilen Ürünler</string>
 </resources>

@@ -49,11 +49,11 @@ class ProductAdapter(private var products: List<BeveragePack>, val context: Cont
             binding.apply {
                 textViewProductName.text = product.name
                 textViewProductAttribute.text = product.attribute
-                textViewProductPrice.text = product.price.toString()
+                textViewProductPrice.text = product.priceText
                 Glide.with(itemView.context).load(product.imageURL).transform(CenterCrop(), RoundedCorners(8)).into(imageViewProduct)
 
                 imageViewAddToCart.setOnClickListener {
-                    Toast.makeText(context,"Çağrı Siker",Toast.LENGTH_LONG).show()
+
                 }
                 imageViewContainer.setOnClickListener {
                     val action = ProductListingFragmentDirections.actionProductListingFragmentToDetailFragment(product)

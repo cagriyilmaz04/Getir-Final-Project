@@ -16,6 +16,8 @@ data class Product(
     val thumbnailURL:String?=null,
     @SerializedName("price")
     val price: Double,
+    @SerializedName("priceText")
+    val priceText:String,
     @SerializedName("imageURL")
     val imageURL: String,
     @SerializedName("shortDescription")

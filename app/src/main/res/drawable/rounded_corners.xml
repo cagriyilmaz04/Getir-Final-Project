@@ -5,14 +5,14 @@
     <item>
         <shape android:shape="rectangle">
             <solid android:color="@color/grey_tint"/> <!-- Assume white background, change as needed -->
-            <corners android:radius="16dp"/>
+            <corners android:radius="24dp"/>
         </shape>
     </item>
     <!-- Border -->
     <item>
         <shape android:shape="rectangle">
             <stroke android:width="2dp" android:color="@color/grey_tint"/> <!-- Specify your gray color here -->
-            <corners android:radius="16dp"/>
+            <corners android:radius="24dp"/>
         </shape>
     </item>
 </layer-list>

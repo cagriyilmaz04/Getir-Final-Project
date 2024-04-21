@@ -4,14 +4,17 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
+    android:background="@color/const_bg"
     tools:context=".shoppingcart.ShoppingCartFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout"
         android:layout_width="match_parent"
         android:layout_height="48dp"
-        android:background="@color/text_primary">
+        android:background="@color/text_primary"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
 
         <ImageView
@@ -31,7 +34,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/open_sans_bold"
-            android:text="Sepetim"
+            android:text="@string/my_basket"
             android:textColor="@color/white"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -50,11 +53,90 @@
             app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewLocal"
         android:layout_width="match_parent"
-        android:layout_height="300dp"
+        android:layout_height="350dp"
+
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <Button
+            android:id="@+id/buttonComplete"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="0.7"
+            android:background="@drawable/rounded_container"
+            android:fontFamily="@font/open_sans_bold"
+            android:text="@string/button_complete"
+            android:textAllCaps="false"
+            android:textColor="@color/white">
+
+        </Button>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:layout_weight="1"
+            android:background="@drawable/roundend_right"
+            android:elevation="3dp">
+
+            <TextView
+                android:id="@+id/textViewPrice"
+                android:layout_width="match_parent"
+                android:layout_height="38dp"
+                android:fontFamily="@font/open_sans_bold"
+                android:gravity="center"
+                android:text="TextView"
+                android:textColor="@color/text_primary"
+                android:textSize="24sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/textSuggestedProduct"
+        android:layout_width="135dp"
+        android:layout_height="24dp"
+        android:layout_marginTop="16dp"
+        android:fontFamily="@font/open_sans_semibold"
+        android:gravity="center"
+        android:text="@string/suggested_product"
+        android:textColor="@color/text_dark"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.057"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/recyclerViewLocal" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvSuggestedProducts"
+        android:layout_width="0dp"
+        android:layout_height="240dp"
+        android:background="@color/white"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/constraintLayout" />
+        app:layout_constraintTop_toBottomOf="@+id/textSuggestedProduct"
+        app:layout_constraintVertical_bias="0.068" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
