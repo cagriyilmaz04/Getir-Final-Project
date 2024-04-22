@@ -25,10 +25,15 @@ class ProductListingFragment : BaseFragment<FragmentProductListingBinding>(Fragm
         super.onViewCreated(view, savedInstanceState)
         setupRecyclerView()
         observeProducts()
+        binding.basketCustom.setOnBasketClickListener {
+            findNavController().navigate(R.id.action_productListingFragment_to_shoppingCartFragment)
+        }
 
+/*
         binding.imageBasket.setOnClickListener {
             findNavController().navigate(R.id.action_productListingFragment_to_shoppingCartFragment)
         }
+        */
     }
 
     private fun setupRecyclerView() {
@@ -57,6 +62,7 @@ class ProductListingFragment : BaseFragment<FragmentProductListingBinding>(Fragm
                     is Resource.Error -> {
                         Toast.makeText(context, "Error: ${resource.message}", Toast.LENGTH_LONG).show()
                     }
+
                 }
             }
         }

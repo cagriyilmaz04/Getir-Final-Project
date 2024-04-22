@@ -65,4 +65,5 @@ class ProductsViewModel @Inject constructor(
     fun deleteProductFromCart(product: ProductEntity) {
         sharedViewModel.deleteProductFromCart(product) // Delegate to SharedViewModel
     }
+
 }

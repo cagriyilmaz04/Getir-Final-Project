@@ -31,6 +31,9 @@ class DetailFragment : BaseFragment<FragmentDetailBinding>(FragmentDetailBinding
             findNavController().navigate(R.id.action_detailFragment_to_shoppingCartFragment)
         }
 
+
+
+
     }
 
     private fun setupInitialViews() {
