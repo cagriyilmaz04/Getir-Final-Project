@@ -3,6 +3,7 @@ package com.example.getirmultideneme.shoppingcart
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewAnimationUtils
 import android.view.ViewGroup
 import androidx.navigation.NavController
 import androidx.recyclerview.widget.RecyclerView
@@ -13,12 +14,15 @@ import com.example.data.models.SuggestedProduct
 import com.example.getirmultideneme.R
 import com.example.getirmultideneme.databinding.RecylerRowBinding
 import com.example.getirmultideneme.productlisting.ProductListingFragmentDirections
+import com.example.getirmultideneme.productlisting.ProductsViewModel
+import com.example.getirmultideneme.util.Extension
 import com.example.getirmultideneme.util.Extension.convertToProduct
 
 
 class SuggestedProductAdapter(
     var products: List<BeverageSuggestedPack>,
     val context: Context,
+    private val viewModel: ProductsViewModel,
     private val navController: NavController
 ) : RecyclerView.Adapter<SuggestedProductAdapter.ProductViewHolder>() {
 
@@ -71,6 +75,49 @@ class SuggestedProductAdapter(
                 imageViewContainer.setOnClickListener {
                     val action = ProductListingFragmentDirections.actionProductListingFragmentToDetailFragment(returnedProduct)
                     navController.navigate(action)
+                }
+
+                csImageViewAdd.setOnClickListener {
+                    textQuantity.text = "1"
+                    csImageViewAdd.visibility = View.GONE
+                    layoutQuantitySelector.visibility = View.VISIBLE
+                    constraintLayoutProductImage.setBackgroundResource(R.drawable.constraint_background_transition)
+                    viewModel.addToCart(Extension.convertToProductSuggesterdToEntity(product))
+                    val cx = constraintLayoutProductImage.width
+                    val cy = 0
+
+                    val finalRadius = Math.hypot(cx.toDouble(), constraintLayoutProductImage.height.toDouble()).toFloat()
+
+                    val reveal = ViewAnimationUtils.createCircularReveal(constraintLayoutProductImage, cx, cy, 0f, finalRadius)
+                    reveal.duration = 600
+                    reveal.start()
+                }
+                buttonIncrease.setOnClickListener {
+                    val currentQuantity = textQuantity.text.toString().toInt()
+                    val newQuantity = currentQuantity + 1
+                    textQuantity.text = newQuantity.toString()
+                    buttonDecrease.setImageResource(if (newQuantity > 1) R.drawable.subtract else R.drawable.trash_small)
+                    val productEntity = Extension.convertToProductSuggesterdToEntity(product)
+                    productEntity.quantity = newQuantity
+                    viewModel.updateQuantity(productEntity,true)
+                }
+                buttonDecrease.setOnClickListener {
+                    val currentQuantity = textQuantity.text.toString().toInt()
+                    if (currentQuantity > 1) {
+                        val newQuantity = currentQuantity - 1
+                        textQuantity.text = newQuantity.toString()
+                        buttonDecrease.setImageResource(if (newQuantity > 1) R.drawable.subtract else R.drawable.trash_small)
+                        val productEntity = Extension.convertToProductSuggesterdToEntity(product)
+                        productEntity.quantity = newQuantity  // Burada azalan miktar güncellenmeli
+                        viewModel.updateQuantity(productEntity, false)
+                    } else {
+                        viewModel.deleteProductFromCart(Extension.convertToProductSuggesterdToEntity(product))
+                        layoutQuantitySelector.visibility = View.GONE
+                        imageViewAddToCart.visibility = View.VISIBLE
+                        Extension.fadeInView(imageViewAddToCart, context)
+                        Extension.fadeOutView(layoutQuantitySelector, context)
+                        constraintLayoutProductImage.setBackgroundResource(R.drawable.bg_last_product_image)
+                    }
                 }
 
             }

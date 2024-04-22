@@ -19,7 +19,7 @@ import javax.inject.Inject
 @HiltViewModel
 class ProductsViewModel @Inject constructor(
     private val productRepository: ProductRepository,
-    private val sharedViewModel: SharedViewModel  // SharedViewModel injected for shared functionality
+    val sharedViewModel: SharedViewModel  // SharedViewModel injected for shared functionality
 ) : BaseViewModel<List<BeveragePack>>() {
 
     private val _suggestedProducts = MutableStateFlow<Resource<List<BeverageSuggestedPack>>>(Resource.Loading())
@@ -29,7 +29,14 @@ class ProductsViewModel @Inject constructor(
         loadProducts()
         loadSuggestedProducts()
     }
-
+    fun isProductInCart(productId: String): Boolean {
+        return sharedViewModel.products.value.let { resource ->
+            when (resource) {
+                is Resource.Success -> resource.data.any { it.productId == productId }
+                else -> false
+            }
+        }
+    }
     private fun loadProducts() {
         viewModelScope.launch {
             productRepository.getProducts()

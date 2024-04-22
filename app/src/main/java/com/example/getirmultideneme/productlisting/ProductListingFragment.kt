@@ -18,34 +18,29 @@ import presentation.base.BaseFragment
 
 @AndroidEntryPoint
 class ProductListingFragment : BaseFragment<FragmentProductListingBinding>(FragmentProductListingBinding::inflate) {
-
     private val viewModel: ProductsViewModel by viewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        observeBasketUpdates()  // Start observing basket updates immediately
         setupRecyclerView()
         observeProducts()
+
         binding.basketCustom.setOnBasketClickListener {
             findNavController().navigate(R.id.action_productListingFragment_to_shoppingCartFragment)
         }
-
-/*
-        binding.imageBasket.setOnClickListener {
-            findNavController().navigate(R.id.action_productListingFragment_to_shoppingCartFragment)
-        }
-        */
     }
 
     private fun setupRecyclerView() {
-        val findNavigation = findNavController()
+        val navigation = findNavController()
         binding.verticalRecyclerView.apply {
             layoutManager = GridLayoutManager(context, 3)
-            adapter = ProductAdapter(ArrayList(), requireContext(), viewModel, findNavigation)
+            adapter = ProductAdapter(emptyList(), requireContext(), viewModel, navigation)
         }
 
         binding.rvSuggestedProducts.apply {
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-            adapter = SuggestedProductAdapter(ArrayList(), requireContext(), findNavigation)
+            adapter = SuggestedProductAdapter(emptyList(), requireContext(), viewModel, navigation)
         }
     }
 
@@ -53,16 +48,13 @@ class ProductListingFragment : BaseFragment<FragmentProductListingBinding>(Fragm
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.state.collect { resource ->
                 when (resource) {
-                    is Resource.Loading -> {
-                        // Loading UI göster
-                    }
+                    is Resource.Loading -> { /* Show loading UI */ }
                     is Resource.Success -> {
                         (binding.verticalRecyclerView.adapter as? ProductAdapter)?.updateData(resource.data)
                     }
                     is Resource.Error -> {
                         Toast.makeText(context, "Error: ${resource.message}", Toast.LENGTH_LONG).show()
                     }
-
                 }
             }
         }
@@ -70,9 +62,7 @@ class ProductListingFragment : BaseFragment<FragmentProductListingBinding>(Fragm
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.suggestedProducts.collect { resource ->
                 when (resource) {
-                    is Resource.Loading -> {
-                        // Loading UI for suggested products
-                    }
+                    is Resource.Loading -> { /* Show loading UI for suggested products */ }
                     is Resource.Success -> {
                         (binding.rvSuggestedProducts.adapter as? SuggestedProductAdapter)?.updateData(resource.data)
                     }
@@ -83,6 +73,23 @@ class ProductListingFragment : BaseFragment<FragmentProductListingBinding>(Fragm
             }
         }
     }
+
+    private fun observeBasketUpdates() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.sharedViewModel.products.collect { resource ->
+                if (isAdded && isVisible && view != null) {  // Fragment aktif ve görünüm mevcut olduğunda çalışacak
+                    when (resource) {
+                        is Resource.Success -> {
+                            val totalPrice = resource.data.sumOf { it.price * it.quantity }
+                            binding.basketCustom.setPrice(totalPrice)
+                        }
+                        else -> {}
+                    }
+                }
+            }
+        }
+    }
+
 
     override fun onResume() {
         super.onResume()

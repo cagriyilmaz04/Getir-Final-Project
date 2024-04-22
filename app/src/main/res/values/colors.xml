@@ -7,5 +7,5 @@
     <color name="text_secondary">#697488</color>
     <color name="grey_tint">#BDBDBD</color>
     <color name="const_bg">#F2F0FA</color>
-
+    <color name="transprent">#00000000</color>
 </resources>

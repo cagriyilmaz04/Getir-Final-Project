@@ -31,14 +31,25 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 />
 
-
-            <ImageView
-                android:id="@+id/imageViewAddToCart"
-                android:layout_height="25dp"
-                android:layout_width="25dp"
-                android:src="@drawable/add_button"
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/csImageViewAdd"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:background="@drawable/button"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent">
+
+                <ImageView
+                    android:id="@+id/imageViewAddToCart"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:src="@drawable/add_button"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
 
             <LinearLayout
                 android:id="@+id/layoutQuantitySelector"

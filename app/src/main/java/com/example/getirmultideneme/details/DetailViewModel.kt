@@ -1,26 +1,22 @@
 package com.example.getirmultideneme.details
 
-
-import android.util.Log
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.ViewModel
 import com.example.data.models.ProductEntity
-import com.example.data.repository.LocalProductRepository
 import com.example.getirmultideneme.SharedViewModel
-import com.example.presentation.base.BaseViewModel
-import com.example.presentation.base.util.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.launch
 import javax.inject.Inject
+
 @HiltViewModel
 class DetailViewModel @Inject constructor(
     private val sharedViewModel: SharedViewModel
-) : BaseViewModel<ProductEntity>() {
+) : ViewModel() {
 
     var product: ProductEntity? = null
-        set(value) {
-            field = value
-            value?.let { postState(Resource.Success(it)) }
-        }
+        private set
+
+    fun setProduct(productEntity: ProductEntity) {
+        this.product = productEntity
+    }
 
     fun addProductToCart() {
         product?.let {
@@ -29,8 +25,10 @@ class DetailViewModel @Inject constructor(
     }
 
     fun updateQuantity(increase: Boolean) {
-        product?.let { prod ->
-            sharedViewModel.updateQuantity(prod, increase)
+        product = product?.let {
+            val updatedProduct = it.copy(quantity = if (increase) it.quantity + 1 else Math.max(0, it.quantity - 1))
+            sharedViewModel.updateQuantity(updatedProduct, increase)
+            updatedProduct  // Return the updated product
         }
     }
 
@@ -40,5 +38,3 @@ class DetailViewModel @Inject constructor(
         }
     }
 }
-
-

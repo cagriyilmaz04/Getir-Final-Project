@@ -53,6 +53,12 @@ object Extension {
         return productEntity
     }
 
+    fun convertToProductSuggesterdToEntity(product: SuggestedProduct):ProductEntity{
+        val prod = convertToProduct(product)
+        return convertToProductEntity(prod)
+
+    }
+
      fun fadeInView(view: View,context:Context) {
         val fadeInAnimation = AnimationUtils.loadAnimation(context, R.anim.fade_in)
         view.startAnimation(fadeInAnimation)
