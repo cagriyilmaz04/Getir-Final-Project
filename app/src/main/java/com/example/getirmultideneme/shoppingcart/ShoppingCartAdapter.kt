@@ -1,6 +1,7 @@
 package com.example.getirmultideneme.shoppingcart
 
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -39,7 +40,12 @@ class ShoppingCartAdapter(
                 if(textProductAttribute.text.toString().isNullOrEmpty()){
                     textProductAttribute.visibility = View.GONE
                 }else {
-                    textProductAttribute.text = product.attribute
+                    if(product.attribute.toString().equals("null")) {
+                        textProductAttribute.visibility = View.INVISIBLE
+                    }else{
+                        textProductAttribute.text = product.attribute
+                    }
+
                 }
 
                 textProductPrice.text = String.format("${context.getString(R.string.turkish_lira)}"+"%.2f", product.price)

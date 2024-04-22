@@ -11,6 +11,8 @@ import com.bumptech.glide.Glide
 import com.example.data.models.ProductEntity
 import com.example.getirmultideneme.R
 import com.example.getirmultideneme.databinding.FragmentDetailBinding
+import com.example.getirmultideneme.util.Extension.fadeInView
+import com.example.getirmultideneme.util.Extension.fadeOutView
 import presentation.base.BaseFragment
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -39,14 +41,11 @@ class DetailFragment : BaseFragment<FragmentDetailBinding>(FragmentDetailBinding
                 var image = ""
 
                 if(product.imageURL!=null){
-                    Toast.makeText(requireContext(),"Burada",Toast.LENGTH_LONG).show()
                     image += product.imageURL
 
                 }else{
-                    Toast.makeText(requireContext(),"Girdi",Toast.LENGTH_LONG).show()
                     image += product.thumbnailURL
                 }
-                Toast.makeText(requireContext(),image.toString(),Toast.LENGTH_LONG).show()
                 Glide.with(requireContext()).load(image).into(imageProduct)
                 textProductPrice.text = product.priceText.toString()
                 textProductName.text = product.name.toString()
@@ -59,7 +58,7 @@ class DetailFragment : BaseFragment<FragmentDetailBinding>(FragmentDetailBinding
         }
 
         binding.buttonAddToCart.setOnClickListener {
-            fadeInView(binding.cartPrice)
+            fadeInView(binding.cartPrice,requireContext())
             arguments?.let {
                 val productArgs = DetailFragmentArgs.fromBundle(it).product
                 viewModel.product = ProductEntity(
@@ -73,8 +72,8 @@ class DetailFragment : BaseFragment<FragmentDetailBinding>(FragmentDetailBinding
                     quantity = binding.textQuantity.text.toString().toInt()
                 )
                 viewModel.addProductToCart()
-                fadeOutView(binding.buttonAddToCart)
-                fadeInView(binding.layoutQuantitySelector)
+                fadeOutView(binding.buttonAddToCart,requireContext())
+                fadeInView(binding.layoutQuantitySelector,requireContext())
             }
         }
         binding.buttonIncrease.setOnClickListener {
@@ -97,9 +96,9 @@ class DetailFragment : BaseFragment<FragmentDetailBinding>(FragmentDetailBinding
             binding.buttonDecrease.setImageResource(R.drawable.delete)
             binding.buttonDecrease.setOnClickListener {
                 viewModel.deleteProductFromCart()
-                fadeInView(binding.buttonAddToCart)
-                fadeOutView(binding.layoutQuantitySelector)
-                fadeOutView(binding.cartPrice)
+                fadeInView(binding.buttonAddToCart,requireContext())
+                fadeOutView(binding.layoutQuantitySelector,requireContext())
+                fadeOutView(binding.cartPrice,requireContext())
 
             }
         } else {
@@ -111,15 +110,5 @@ class DetailFragment : BaseFragment<FragmentDetailBinding>(FragmentDetailBinding
         }
     }
 
-    private fun fadeInView(view: View) {
-        val fadeInAnimation = AnimationUtils.loadAnimation(context, R.anim.fade_in)
-        view.startAnimation(fadeInAnimation)
-        view.visibility = View.VISIBLE
-    }
 
-    private fun fadeOutView(view: View) {
-        val fadeOutAnimation = AnimationUtils.loadAnimation(context, R.anim.fade_out)
-        view.startAnimation(fadeOutAnimation)
-        view.visibility = View.GONE
-    }
 }

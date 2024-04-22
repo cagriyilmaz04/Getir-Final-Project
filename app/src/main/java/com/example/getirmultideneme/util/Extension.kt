@@ -1,6 +1,9 @@
 package com.example.getirmultideneme.util
 
+import android.content.Context
 import android.os.Build
+import android.view.View
+import android.view.animation.AnimationUtils
 import androidx.appcompat.app.AppCompatActivity
 import com.example.data.models.Product
 import com.example.data.models.ProductEntity
@@ -32,8 +35,33 @@ object Extension {
             price = suggestedProduct.price,
             priceText = suggestedProduct.priceText,
             imageURL = suggestedProduct.imageURL,
-            description = suggestedProduct.shortDescription
+            description = suggestedProduct.shortDescription,
             )
         return product
+    }
+
+    fun convertToProductEntity(product:Product):ProductEntity {
+        val productEntity = ProductEntity(productId = product.id,
+            name = product.name,
+            attribute = product.attribute.toString(),
+            thumbnailURL = product.thumbnailURL,
+            price = product.price,
+            imageURL = product.imageURL.toString(),
+            description = product.description,
+            quantity = 1)
+
+        return productEntity
+    }
+
+     fun fadeInView(view: View,context:Context) {
+        val fadeInAnimation = AnimationUtils.loadAnimation(context, R.anim.fade_in)
+        view.startAnimation(fadeInAnimation)
+        view.visibility = View.VISIBLE
+    }
+
+    fun fadeOutView(view: View,context:Context) {
+        val fadeOutAnimation = AnimationUtils.loadAnimation(context, R.anim.fade_out)
+        view.startAnimation(fadeOutAnimation)
+        view.visibility = View.GONE
     }
 }

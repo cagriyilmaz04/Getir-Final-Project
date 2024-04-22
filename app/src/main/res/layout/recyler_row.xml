@@ -20,7 +20,7 @@
             android:layout_height="120dp"
             android:background="@drawable/bg_last_product_image">
 
-            <!-- Product Image -->
+
             <ImageView
                 android:id="@+id/imageViewProduct"
                 android:layout_width="108dp"
@@ -31,16 +31,56 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 />
 
-            <!-- Add to Cart Button, positioned to float over the top right corner of the image -->
+
             <ImageView
                 android:id="@+id/imageViewAddToCart"
-                android:layout_width="12dp"
-                android:layout_height="12dp"
+                android:layout_height="25dp"
+                android:layout_width="25dp"
                 android:src="@drawable/add_button"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
+            <LinearLayout
+                android:id="@+id/layoutQuantitySelector"
+                android:layout_width="50dp"
+                android:layout_height="70dp"
+                android:orientation="vertical"
+                android:visibility="invisible"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+
+                <ImageButton
+                    android:id="@+id/buttonIncrease"
+                    android:background="@color/white"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:src="@drawable/add_small">
+                </ImageButton>
+
+                <Button
+                    android:id="@+id/textQuantity"
+                    android:background="@color/text_primary"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:text="1" />
+
+                <ImageButton
+                    android:id="@+id/buttonDecrease"
+                    android:background="@color/white"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:src="@drawable/trash_small">
+                </ImageButton>
+
+            </LinearLayout>
+
         </androidx.constraintlayout.widget.ConstraintLayout>
+
+
 
         <!-- Product Price -->
         <TextView
@@ -61,10 +101,9 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/textViewProductPrice"
             android:layout_alignStart="@id/textViewProductPrice"
-            android:fontFamily="@font/open_sans_semibold"
             android:layout_marginTop="4dp"
             android:text="Product Name"
-            android:textColor="@color/text_dark"
+            style="@style/ProductTitle"
             android:singleLine="false"
             android:maxLines="2"
             android:ellipsize="end" />
@@ -79,7 +118,8 @@
             android:layout_alignStart="@id/textViewProductName"
             android:layout_marginTop="4dp"
             android:text="Product Attribute"
-            android:textColor="@color/text_secondary" />
+            style="@style/ProductAttribute"
+             />
 
     </RelativeLayout>
 

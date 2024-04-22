@@ -16,7 +16,6 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import presentation.base.BaseFragment
 
-@Suppress("UNREACHABLE_CODE")
 @AndroidEntryPoint
 class ProductListingFragment : BaseFragment<FragmentProductListingBinding>(FragmentProductListingBinding::inflate) {
 
@@ -36,13 +35,12 @@ class ProductListingFragment : BaseFragment<FragmentProductListingBinding>(Fragm
         val findNavigation = findNavController()
         binding.verticalRecyclerView.apply {
             layoutManager = GridLayoutManager(context, 3)
-            adapter = ProductAdapter(ArrayList(), requireContext(), findNavigation)
+            adapter = ProductAdapter(ArrayList(), requireContext(), viewModel, findNavigation)
         }
-
 
         binding.rvSuggestedProducts.apply {
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-            adapter = SuggestedProductAdapter(ArrayList(),requireContext(),findNavigation)
+            adapter = SuggestedProductAdapter(ArrayList(), requireContext(), findNavigation)
         }
     }
 
@@ -51,24 +49,23 @@ class ProductListingFragment : BaseFragment<FragmentProductListingBinding>(Fragm
             viewModel.state.collect { resource ->
                 when (resource) {
                     is Resource.Loading -> {
+                        // Loading UI göster
                     }
                     is Resource.Success -> {
                         (binding.verticalRecyclerView.adapter as? ProductAdapter)?.updateData(resource.data)
                     }
                     is Resource.Error -> {
-
-                    }
-                    else -> {
-
+                        Toast.makeText(context, "Error: ${resource.message}", Toast.LENGTH_LONG).show()
                     }
                 }
             }
         }
+
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.suggestedProducts.collect { resource ->
                 when (resource) {
                     is Resource.Loading -> {
-
+                        // Loading UI for suggested products
                     }
                     is Resource.Success -> {
                         (binding.rvSuggestedProducts.adapter as? SuggestedProductAdapter)?.updateData(resource.data)
@@ -79,7 +76,10 @@ class ProductListingFragment : BaseFragment<FragmentProductListingBinding>(Fragm
                 }
             }
         }
+    }
 
-
+    override fun onResume() {
+        super.onResume()
+        observeProducts()
     }
 }

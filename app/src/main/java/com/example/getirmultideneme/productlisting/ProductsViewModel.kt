@@ -3,8 +3,9 @@ package com.example.getirmultideneme.productlisting
 import androidx.lifecycle.viewModelScope
 import com.example.data.models.BeveragePack
 import com.example.data.models.BeverageSuggestedPack
-import com.example.data.models.SuggestedProduct
+import com.example.data.models.ProductEntity
 import com.example.data.repository.ProductRepository
+import com.example.getirmultideneme.SharedViewModel
 import com.example.presentation.base.BaseViewModel
 import com.example.presentation.base.util.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -17,7 +18,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ProductsViewModel @Inject constructor(
-    private val productRepository: ProductRepository
+    private val productRepository: ProductRepository,
+    private val sharedViewModel: SharedViewModel  // SharedViewModel injected for shared functionality
 ) : BaseViewModel<List<BeveragePack>>() {
 
     private val _suggestedProducts = MutableStateFlow<Resource<List<BeverageSuggestedPack>>>(Resource.Loading())
@@ -40,6 +42,10 @@ class ProductsViewModel @Inject constructor(
         }
     }
 
+    fun addToCart(product: ProductEntity) {
+        sharedViewModel.addProductToCart(product) // Delegate to SharedViewModel
+    }
+
     private fun loadSuggestedProducts() {
         viewModelScope.launch {
             productRepository.getSuggestedProducts()
@@ -50,5 +56,13 @@ class ProductsViewModel @Inject constructor(
                     _suggestedProducts.value = Resource.Success(suggestedProducts)
                 }
         }
+    }
+
+    fun updateQuantity(product: ProductEntity, increase: Boolean) {
+        sharedViewModel.updateQuantity(product, increase) // Delegate to SharedViewModel
+    }
+
+    fun deleteProductFromCart(product: ProductEntity) {
+        sharedViewModel.deleteProductFromCart(product) // Delegate to SharedViewModel
     }
 }

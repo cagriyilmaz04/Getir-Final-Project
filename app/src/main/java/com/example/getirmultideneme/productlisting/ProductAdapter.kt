@@ -4,20 +4,21 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.navigation.NavController
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.bumptech.glide.load.resource.bitmap.CenterCrop
-import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.example.data.models.BeveragePack
 import com.example.data.models.Product
 import com.example.getirmultideneme.R
 import com.example.getirmultideneme.databinding.RecylerRowBinding
+import com.example.getirmultideneme.util.Extension.convertToProductEntity
+import com.example.getirmultideneme.util.Extension.fadeInView
+import com.example.getirmultideneme.util.Extension.fadeOutView
 
 
 class ProductAdapter(private var products: List<BeveragePack>,
                      val context: Context,
+                     private val viewModel: ProductsViewModel,
                      private val navController: NavController) : RecyclerView.Adapter<ProductAdapter.ProductViewHolder>() {
 
     fun updateData(newProducts: List<BeveragePack>) {
@@ -56,8 +57,41 @@ class ProductAdapter(private var products: List<BeveragePack>,
                 Glide.with(itemView.context).load(product.imageURL).into(imageViewProduct)
 
                 imageViewAddToCart.setOnClickListener {
+                    textQuantity.text = "1"
+                    imageViewAddToCart.visibility = View.GONE
+                    layoutQuantitySelector.visibility = View.VISIBLE
+                    viewModel.addToCart(convertToProductEntity(product))
 
                 }
+                buttonIncrease.setOnClickListener {
+                    val currentQuantity = textQuantity.text.toString().toInt()
+                    val newQuantity = currentQuantity + 1
+                    textQuantity.text = newQuantity.toString()
+                    buttonDecrease.setImageResource(if (newQuantity > 1) R.drawable.subtract else R.drawable.trash_small)
+                    val productEntity = convertToProductEntity(product)
+                    productEntity.quantity = newQuantity
+                    viewModel.updateQuantity(productEntity,true)
+                }
+                buttonDecrease.setOnClickListener {
+                    val currentQuantity = textQuantity.text.toString().toInt()
+                    if (currentQuantity > 1) {
+                        val newQuantity = currentQuantity - 1
+                        textQuantity.text = newQuantity.toString()
+                        buttonDecrease.setImageResource(if (newQuantity > 1) R.drawable.subtract else R.drawable.trash_small)
+                        val productEntity = convertToProductEntity(product)
+                        productEntity.quantity = currentQuantity
+                        viewModel.updateQuantity(productEntity,false)
+
+                    } else {
+                        viewModel.deleteProductFromCart(convertToProductEntity(product))
+                        layoutQuantitySelector.visibility = View.GONE
+                        imageViewAddToCart.visibility = View.VISIBLE
+                        fadeInView(imageViewAddToCart,context)
+                        fadeOutView(layoutQuantitySelector,context)
+                    }
+                }
+
+
                 imageViewContainer.setOnClickListener {
                     val action = ProductListingFragmentDirections.actionProductListingFragmentToDetailFragment(product)
                     navController.navigate(action)

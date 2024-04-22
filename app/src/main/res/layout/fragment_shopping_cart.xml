@@ -104,7 +104,7 @@
                 android:layout_height="38dp"
                 android:fontFamily="@font/open_sans_bold"
                 android:gravity="center"
-                android:text="TextView"
+                android:text="@string/turkish_lira"
                 android:textColor="@color/text_primary"
                 android:textSize="24sp"
                 app:layout_constraintBottom_toBottomOf="parent"

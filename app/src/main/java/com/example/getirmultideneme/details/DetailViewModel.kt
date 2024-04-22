@@ -5,6 +5,7 @@ import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.example.data.models.ProductEntity
 import com.example.data.repository.LocalProductRepository
+import com.example.getirmultideneme.SharedViewModel
 import com.example.presentation.base.BaseViewModel
 import com.example.presentation.base.util.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -12,8 +13,8 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 @HiltViewModel
 class DetailViewModel @Inject constructor(
-    private val repository: LocalProductRepository
-) : BaseViewModel<ProductEntity>() {  // Extend from BaseViewModel with ProductEntity as the generic type
+    private val sharedViewModel: SharedViewModel
+) : BaseViewModel<ProductEntity>() {
 
     var product: ProductEntity? = null
         set(value) {
@@ -23,54 +24,21 @@ class DetailViewModel @Inject constructor(
 
     fun addProductToCart() {
         product?.let {
-            viewModelScope.launch {
-                try {
-                    repository.addProductToCart(it)
-                    postState(Resource.Success(it))
-                } catch (e: Exception) {
-                    postState(Resource.Error("Failed to add product to cart", e))
-                }
-            }
+            sharedViewModel.addProductToCart(it)
         }
     }
 
     fun updateQuantity(increase: Boolean) {
         product?.let { prod ->
-            viewModelScope.launch {
-                try {
-                    if (increase) {
-                        prod.quantity++
-                        repository.increaseProductQuantity(prod.productId, 1)
-                    } else {
-                        if (prod.quantity > 1) {
-                            prod.quantity--
-                            repository.decreaseProductQuantity(prod.productId, 1)
-                        } else if (prod.quantity == 1) {
-                            deleteProductFromCart()
-                        }
-                    }
-                    postState(Resource.Success(prod))
-                } catch (e: Exception) {
-                    postState(Resource.Error("Failed to update product quantity", e))
-                }
-            }
+            sharedViewModel.updateQuantity(prod, increase)
         }
     }
 
     fun deleteProductFromCart() {
         product?.let {
-            viewModelScope.launch {
-                try {
-                    repository.deleteProduct(it.productId)
-                    product = null
-                    postState(Resource.Success(it))
-                } catch (e: Exception) {
-                    postState(Resource.Error("Failed to delete product from cart", e))
-                }
-            }
+            sharedViewModel.deleteProductFromCart(it)
         }
     }
 }
-
 
 
