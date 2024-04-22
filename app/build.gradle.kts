@@ -69,6 +69,7 @@ dependencies {
     implementation(libs.androidx.navigation.fragment.ktx)
     implementation(libs.androidx.navigation.ui.ktx)
     implementation(libs.play.services.analytics.impl)
+    implementation(libs.androidx.room.ktx)
 
     // JUnit
     testImplementation(libs.junit)

@@ -64,8 +64,9 @@ class ShoppingCartFragment : BaseFragment<FragmentShoppingCartBinding>(FragmentS
                         if (resource.data.isEmpty()) {
                             Toast.makeText(context, "The cart is now empty.", Toast.LENGTH_SHORT).show()
                         }else{
-                            binding.textViewPrice.text = String.format("${requireContext().getString(R.string.turkish_lira)}"+"%.2f", calculatePrice(shoppingCartAdapter.products))
+
                         }
+                        binding.textViewPrice.text = String.format("${requireContext().getString(R.string.turkish_lira)}"+"%.2f", calculatePrice(shoppingCartAdapter.products))
                     }
                     is Resource.Error -> {
                         Toast.makeText(context, resource.message, Toast.LENGTH_LONG).show()
