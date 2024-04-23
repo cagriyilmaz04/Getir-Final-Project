@@ -1,5 +1,6 @@
 package com.example.getirmultideneme.productlisting
 
+import ProductAdapter
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
@@ -10,7 +11,6 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.getirmultideneme.R
 import com.example.getirmultideneme.databinding.FragmentProductListingBinding
-import com.example.getirmultideneme.shoppingcart.SuggestedProductAdapter
 import com.example.presentation.base.util.Resource
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -22,7 +22,7 @@ class ProductListingFragment : BaseFragment<FragmentProductListingBinding>(Fragm
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        observeBasketUpdates()  // Start observing basket updates immediately
+        observeBasketUpdates()
         setupRecyclerView()
         observeProducts()
 
@@ -64,6 +64,7 @@ class ProductListingFragment : BaseFragment<FragmentProductListingBinding>(Fragm
                 when (resource) {
                     is Resource.Loading -> { /* Show loading UI for suggested products */ }
                     is Resource.Success -> {
+
                         (binding.rvSuggestedProducts.adapter as? SuggestedProductAdapter)?.updateData(resource.data)
                     }
                     is Resource.Error -> {

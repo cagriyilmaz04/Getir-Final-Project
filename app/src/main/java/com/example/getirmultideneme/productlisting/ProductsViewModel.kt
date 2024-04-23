@@ -41,6 +41,14 @@ class ProductsViewModel @Inject constructor(
                 }
         }
     }
+    fun getProductQuantity(productId: String): Int {
+        return sharedViewModel.products.value.let { resource ->
+            when (resource) {
+                is Resource.Success -> resource.data.find { it.productId == productId }?.quantity ?: 0
+                else -> 0
+            }
+        }
+    }
 
     private fun loadSuggestedProducts() {
         viewModelScope.launch {

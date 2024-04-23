@@ -21,7 +21,9 @@ class DetailFragment : BaseFragment<FragmentDetailBinding>(FragmentDetailBinding
         super.onViewCreated(view, savedInstanceState)
         setupInitialViews()
         binding.imageCancel.setOnClickListener { findNavController().popBackStack() }
-        binding.basketCustom.setOnClickListener { findNavController().navigate(R.id.action_detailFragment_to_shoppingCartFragment) }
+        binding.basketCustom.setOnBasketClickListener {
+            findNavController().navigate(R.id.action_detailFragment_to_shoppingCartFragment)
+        }
     }
 
     private fun setupInitialViews() {

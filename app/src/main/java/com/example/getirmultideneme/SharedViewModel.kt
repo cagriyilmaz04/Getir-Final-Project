@@ -31,7 +31,7 @@ class SharedViewModel @Inject constructor(
             } else {
                 localRepository.addProductToCart(product)
             }
-            getAllProducts()  // Tüm ürünleri yeniden yükle
+            getAllProducts()
         }
     }
 

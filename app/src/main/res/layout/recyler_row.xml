@@ -41,8 +41,8 @@
 
                 <ImageView
                     android:id="@+id/imageViewAddToCart"
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
                     android:src="@drawable/add_button"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -51,43 +51,47 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-            <LinearLayout
-                android:id="@+id/layoutQuantitySelector"
-                android:layout_width="50dp"
-                android:layout_height="70dp"
-                android:orientation="vertical"
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardViewQuantitySelector"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="8dp"
                 android:visibility="invisible"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
+                <LinearLayout
+                    android:id="@+id/layoutQuantitySelector"
+                    android:layout_width="50dp"
+                    android:layout_height="70dp"
+                    android:orientation="vertical">
 
-                <ImageButton
-                    android:id="@+id/buttonIncrease"
-                    android:background="@color/white"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:src="@drawable/add_small">
-                </ImageButton>
+                    <ImageButton
+                        android:id="@+id/buttonIncrease"
+                        android:background="@color/white"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:src="@drawable/add_small" />
 
-                <Button
-                    android:id="@+id/textQuantity"
-                    android:background="@color/text_primary"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:text="1" />
+                    <Button
+                        android:id="@+id/textQuantity"
+                        android:background="@color/text_primary"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:text="1" />
 
-                <ImageButton
-                    android:id="@+id/buttonDecrease"
-                    android:background="@color/white"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:src="@drawable/trash_small">
-                </ImageButton>
+                    <ImageButton
+                        android:id="@+id/buttonDecrease"
+                        android:background="@color/white"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:src="@drawable/trash_small" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
 
-            </LinearLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -1,3 +1,5 @@
+package com.example.getirmultideneme.productlisting
+
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
@@ -6,27 +8,23 @@ import android.view.ViewGroup
 import androidx.navigation.NavController
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.example.data.models.BeveragePack
-import com.example.data.models.Product
+import com.example.data.models.BeverageSuggestedPack
+import com.example.data.models.SuggestedProduct
 import com.example.getirmultideneme.R
 import com.example.getirmultideneme.databinding.RecylerRowBinding
-import com.example.getirmultideneme.productlisting.ProductListingFragmentDirections
-import com.example.getirmultideneme.productlisting.ProductsViewModel
 import com.example.getirmultideneme.util.Extension
-import com.example.getirmultideneme.util.Extension.convertToProductEntity
 
-class ProductAdapter(
-    private var products: List<BeveragePack>,
-    private val context: Context,
+
+class SuggestedProductAdapter(
+    var products: List<BeverageSuggestedPack>,
+    val context: Context,
     private val viewModel: ProductsViewModel,
     private val navController: NavController
-) : RecyclerView.Adapter<ProductAdapter.ProductViewHolder>() {
-
-    fun updateData(newProducts: List<BeveragePack>) {
+) : RecyclerView.Adapter<SuggestedProductAdapter.ProductViewHolder>() {
+    fun updateData(newProducts: List<BeverageSuggestedPack>) {
         products = newProducts
         notifyDataSetChanged()
     }
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProductViewHolder {
         val binding = RecylerRowBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return ProductViewHolder(binding)
@@ -38,15 +36,18 @@ class ProductAdapter(
         product?.let { holder.bind(it) }
     }
 
-    override fun getItemCount(): Int = products.firstOrNull()?.products?.size ?: 0
+    override fun getItemCount(): Int {
+        return if (products.isNotEmpty()) products[0].products.size else 0
+    }
 
     inner class ProductViewHolder(private val binding: RecylerRowBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(product: Product) {
+        fun bind(product: SuggestedProduct) {
             binding.apply {
                 textViewProductName.text = product.name
-                textViewProductAttribute.text = product.attribute
                 textViewProductPrice.text = String.format("${context.getString(R.string.turkish_lira)}%.2f", product.price)
-                Glide.with(itemView.context).load(product.imageURL).into(imageViewProduct)
+                textViewProductAttribute.visibility = if (product.attribute.isNullOrEmpty()) View.GONE else View.VISIBLE
+                textViewProductAttribute.text = product.attribute
+                Glide.with(itemView.context).load(product.imageURL ?: product.squareThumbnailURL).into(imageViewProduct)
 
                 val currentQuantity = viewModel.getProductQuantity(product.id)
                 textQuantity.text = currentQuantity.toString()
@@ -56,14 +57,13 @@ class ProductAdapter(
                 csImageViewAdd.visibility = if (isInCart) View.GONE else View.VISIBLE
                 layoutQuantitySelector.visibility = if (isInCart) View.VISIBLE else View.GONE
                 cardViewQuantitySelector.visibility = if (isInCart) View.VISIBLE else View.GONE
-
                 if (!isInCart) {
                     csImageViewAdd.setOnClickListener {
                         textQuantity.text = "1"
                         csImageViewAdd.visibility = View.GONE
                         layoutQuantitySelector.visibility = View.VISIBLE
                         cardViewQuantitySelector.visibility = View.VISIBLE
-                        viewModel.addToCart(convertToProductEntity(product))
+                        viewModel.addToCart(Extension.convertToProductSuggestedToEntity(product))
                         updateDecreaseButtonIcon(1)
                         constraintLayoutProductImage.setBackgroundResource(R.drawable.constraint_background_transition)
                         val cx = constraintLayoutProductImage.width
@@ -87,16 +87,15 @@ class ProductAdapter(
                 }
 
                 imageViewContainer.setOnClickListener {
-                    val action = ProductListingFragmentDirections.actionProductListingFragmentToDetailFragment(product)
+                    val action = ProductListingFragmentDirections.actionProductListingFragmentToDetailFragment(Extension.convertToProduct(product))
                     navController.navigate(action)
                 }
             }
         }
 
-        private fun updateQuantity(product: Product, increase: Boolean) {
+        private fun updateQuantity(product: SuggestedProduct, increase: Boolean) {
             val currentQuantity = binding.textQuantity.text.toString().toInt()
             val newQuantity = if (increase) currentQuantity + 1 else Math.max(0, currentQuantity - 1)
-
             updateDecreaseButtonIcon(newQuantity)
 
             if (newQuantity == 0) {
@@ -109,7 +108,7 @@ class ProductAdapter(
                 binding.layoutQuantitySelector.visibility = View.VISIBLE
             }
 
-            val productEntity = convertToProductEntity(product)
+            val productEntity = Extension.convertToProductSuggestedToEntity(product)
             productEntity.quantity = newQuantity
             viewModel.updateQuantity(productEntity, increase)
         }
@@ -118,11 +117,5 @@ class ProductAdapter(
             binding.buttonDecrease.setImageResource(if (quantity > 1) R.drawable.subtract else R.drawable.trash_small)
         }
 
-
     }
-
-
-
-
-
 }

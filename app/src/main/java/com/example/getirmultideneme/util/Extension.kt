@@ -53,7 +53,7 @@ object Extension {
         return productEntity
     }
 
-    fun convertToProductSuggesterdToEntity(product: SuggestedProduct):ProductEntity{
+    fun convertToProductSuggestedToEntity(product: SuggestedProduct):ProductEntity{
         val prod = convertToProduct(product)
         return convertToProductEntity(prod)
 
