@@ -29,14 +29,7 @@ class ProductsViewModel @Inject constructor(
         loadProducts()
         loadSuggestedProducts()
     }
-    fun isProductInCart(productId: String): Boolean {
-        return sharedViewModel.products.value.let { resource ->
-            when (resource) {
-                is Resource.Success -> resource.data.any { it.productId == productId }
-                else -> false
-            }
-        }
-    }
+
     private fun loadProducts() {
         viewModelScope.launch {
             productRepository.getProducts()
@@ -47,10 +40,6 @@ class ProductsViewModel @Inject constructor(
                     postState(Resource.Success(products))
                 }
         }
-    }
-
-    fun addToCart(product: ProductEntity) {
-        sharedViewModel.addProductToCart(product) // Delegate to SharedViewModel
     }
 
     private fun loadSuggestedProducts() {
@@ -65,6 +54,19 @@ class ProductsViewModel @Inject constructor(
         }
     }
 
+    fun isProductInCart(productId: String): Boolean {
+        return sharedViewModel.products.value.let { resource ->
+            when (resource) {
+                is Resource.Success -> resource.data.any { it.productId == productId }
+                else -> false
+            }
+        }
+    }
+
+    fun addToCart(product: ProductEntity) {
+        sharedViewModel.addProductToCart(product) // Delegate to SharedViewModel
+    }
+
     fun updateQuantity(product: ProductEntity, increase: Boolean) {
         sharedViewModel.updateQuantity(product, increase) // Delegate to SharedViewModel
     }
@@ -72,5 +74,4 @@ class ProductsViewModel @Inject constructor(
     fun deleteProductFromCart(product: ProductEntity) {
         sharedViewModel.deleteProductFromCart(product) // Delegate to SharedViewModel
     }
-
 }
