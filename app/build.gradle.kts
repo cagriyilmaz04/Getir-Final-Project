@@ -109,4 +109,6 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.4.0")
     implementation("androidx.fragment:fragment-ktx:1.6.2")
     implementation("com.github.bumptech.glide:glide:4.16.0")
+
+    implementation("com.facebook.shimmer:shimmer:0.5.0")
 }

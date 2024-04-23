@@ -11,23 +11,23 @@ import com.example.data.models.SuggestedProduct
 import com.example.getirmultideneme.R
 
 object Extension {
-
+    var hasVisitedShoppingCart = false
     fun calculatePrice(data: List<ProductEntity>): Double {
         var price = 0.0
-        for(i in data) {
+        for (i in data) {
             price += ((i.price) * (i.quantity))
         }
         return price
     }
 
-    fun setStausBar(activity:AppCompatActivity,color:Int) {
+    fun setStausBar(activity: AppCompatActivity, color :Int) {
         // Set the status bar color
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             activity.window.statusBarColor = activity.resources.getColor(color, activity.theme)
         }
     }
 
-    fun convertToProduct(suggestedProduct:SuggestedProduct):Product{
+    fun convertToProduct(suggestedProduct: SuggestedProduct):Product{
         val product = Product(id = suggestedProduct.id,
             name = suggestedProduct.name,
             attribute = null,
@@ -36,11 +36,11 @@ object Extension {
             priceText = suggestedProduct.priceText,
             imageURL = suggestedProduct.imageURL,
             description = suggestedProduct.shortDescription,
-            )
+    )
         return product
     }
 
-    fun convertToProductEntity(product:Product):ProductEntity {
+    fun convertToProductEntity(product: Product): ProductEntity {
         val productEntity = ProductEntity(productId = product.id,
             name = product.name,
             attribute = product.attribute.toString(),
@@ -53,19 +53,18 @@ object Extension {
         return productEntity
     }
 
-    fun convertToProductSuggestedToEntity(product: SuggestedProduct):ProductEntity{
+    fun convertToProductSuggestedToEntity(product: SuggestedProduct):ProductEntity {
         val prod = convertToProduct(product)
         return convertToProductEntity(prod)
-
     }
 
-     fun fadeInView(view: View,context:Context) {
+     fun fadeInView(view: View,context: Context) {
         val fadeInAnimation = AnimationUtils.loadAnimation(context, R.anim.fade_in)
         view.startAnimation(fadeInAnimation)
         view.visibility = View.VISIBLE
     }
 
-    fun fadeOutView(view: View,context:Context) {
+    fun fadeOutView(view: View,context: Context) {
         val fadeOutAnimation = AnimationUtils.loadAnimation(context, R.anim.fade_out)
         view.startAnimation(fadeOutAnimation)
         view.visibility = View.GONE

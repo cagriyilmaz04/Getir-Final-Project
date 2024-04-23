@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.facebook.shimmer.ShimmerFrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/shimmer_view_container"
+    android:layout_width="140dp"
+    android:layout_height="220dp"
+    app:shimmer_auto_start="true"
+   >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <!-- RelativeLayout to hold the ImageView and Text Elements -->
+        <RelativeLayout
+            android:id="@+id/imageViewContainer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="8dp">
+
+            <!-- ConstraintLayout for the product image and add to cart icon -->
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/constraintLayoutProductImage"
+                android:layout_width="120dp"
+                android:layout_height="120dp"
+                android:background="@drawable/bg_last_product_image">
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@android:color/darker_gray"/>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/csImageViewAdd"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:background="@drawable/button"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"/>
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/cardViewQuantitySelector"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:cardCornerRadius="8dp"
+                    android:visibility="invisible"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"/>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <!-- TextViews for Product Price, Name, and Attribute -->
+            <TextView
+                android:id="@+id/textViewProductPrice"
+                android:layout_width="60dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/constraintLayoutProductImage"
+                android:layout_alignStart="@id/constraintLayoutProductImage"
+                android:layout_marginTop="8dp"
+                android:background="@color/text_secondary" />
+
+            <TextView
+                android:id="@+id/textViewProductName"
+                style="@style/ProductTitle"
+                android:layout_width="90dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/textViewProductPrice"
+                android:layout_alignStart="@id/textViewProductPrice"
+                android:layout_marginTop="4dp"
+                android:background="@color/text_secondary"
+                />
+
+            <TextView
+                android:id="@+id/textViewProductAttribute"
+                style="@style/ProductAttribute"
+                android:layout_width="70dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/textViewProductName"
+                android:layout_alignStart="@id/textViewProductName"
+                android:background="@color/text_secondary"
+                android:layout_marginTop="4dp" />
+
+        </RelativeLayout>
+    </RelativeLayout>
+
+</com.facebook.shimmer.ShimmerFrameLayout>

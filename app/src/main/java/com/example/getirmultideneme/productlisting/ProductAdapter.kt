@@ -1,8 +1,10 @@
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewAnimationUtils
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.navigation.NavController
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -21,6 +23,7 @@ class ProductAdapter(
     private val viewModel: ProductsViewModel,
     private val navController: NavController
 ) : RecyclerView.Adapter<ProductAdapter.ProductViewHolder>() {
+
 
     fun updateData(newProducts: List<BeveragePack>) {
         products = newProducts
@@ -58,24 +61,27 @@ class ProductAdapter(
                 cardViewQuantitySelector.visibility = if (isInCart) View.VISIBLE else View.GONE
 
                 if (!isInCart) {
+
                     csImageViewAdd.setOnClickListener {
-                        textQuantity.text = "1"
                         csImageViewAdd.visibility = View.GONE
+                        textQuantity.text = "1"
                         layoutQuantitySelector.visibility = View.VISIBLE
                         cardViewQuantitySelector.visibility = View.VISIBLE
                         viewModel.addToCart(convertToProductEntity(product))
                         updateDecreaseButtonIcon(1)
-                        constraintLayoutProductImage.setBackgroundResource(R.drawable.constraint_background_transition)
-                        val cx = constraintLayoutProductImage.width
+                        imageViewBackground.setBackgroundResource(R.drawable.constraint_background_transition)
+                        val cx = imageViewBackground.width
                         val cy = 0
 
-                        val finalRadius = Math.hypot(cx.toDouble(), constraintLayoutProductImage.height.toDouble()).toFloat()
-
-                        val reveal = ViewAnimationUtils.createCircularReveal(constraintLayoutProductImage, cx, cy, 0f, finalRadius)
+                        val finalRadius = Math.hypot(cx.toDouble(), imageViewBackground.height.toDouble()).toFloat()
+                        val reveal = ViewAnimationUtils.createCircularReveal(imageViewBackground, cx, cy, 0f, finalRadius)
                         reveal.duration = 600
                         reveal.start()
-                        constraintLayoutProductImage.setBackgroundResource(R.drawable.constraint_background_transition)
+                        imageViewBackground.setBackgroundResource(R.drawable.constraint_background_transition)
                     }
+                }else{
+                    imageViewBackground.setBackgroundResource(R.drawable.constraint_background_transition)
+
                 }
 
                 buttonIncrease.setOnClickListener {
@@ -102,7 +108,7 @@ class ProductAdapter(
             if (newQuantity == 0) {
                 Extension.fadeInView(binding.csImageViewAdd, context)
                 Extension.fadeOutView(binding.layoutQuantitySelector, context)
-                binding.constraintLayoutProductImage.setBackgroundResource(R.drawable.bg_last_product_image)
+                binding.imageViewBackground.setBackgroundResource(R.drawable.bg_last_product_image)
             } else {
                 binding.textQuantity.text = newQuantity.toString()
                 binding.csImageViewAdd.visibility = View.GONE
@@ -118,11 +124,6 @@ class ProductAdapter(
             binding.buttonDecrease.setImageResource(if (quantity > 1) R.drawable.subtract else R.drawable.trash_small)
         }
 
-
     }
-
-
-
-
 
 }

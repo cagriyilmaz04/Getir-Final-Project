@@ -19,6 +19,16 @@
             android:layout_width="120dp"
             android:layout_height="120dp"
             android:background="@drawable/bg_last_product_image">
+            <View
+                android:id="@+id/imageViewBackground"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/bg_last_product_image"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                />
 
 
             <ImageView
@@ -36,6 +46,7 @@
                 android:layout_width="35dp"
                 android:layout_height="35dp"
                 android:background="@drawable/button"
+                android:elevation="8dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 

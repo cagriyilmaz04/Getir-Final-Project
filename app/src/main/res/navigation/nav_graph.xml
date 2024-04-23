@@ -40,6 +40,9 @@
         <argument
             android:name="product"
             app:argType="com.example.data.models.Product" />
+        <action
+            android:id="@+id/action_detailFragment_to_productListingFragment"
+            app:destination="@id/productListingFragment" />
     </fragment>
 
     <fragment

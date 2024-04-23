@@ -14,11 +14,14 @@ class BasketCustomView @JvmOverloads constructor(
 
     private var textViewPrice: TextView
     private var imageViewBasket: ImageView
+    private var constraintLayout:ConstraintLayout
+
 
     init {
         val view = LayoutInflater.from(context).inflate(R.layout.custom_basket_view, this, true)
-        textViewPrice = view.findViewById(R.id.textView3)
+        textViewPrice = view.findViewById(R.id.tvPrice)
         imageViewBasket = view.findViewById(R.id.customBasket)
+        constraintLayout = view.findViewById(R.id.clTextBg)
         imageViewBasket.setOnClickListener { }
     }
 
@@ -28,5 +31,12 @@ class BasketCustomView @JvmOverloads constructor(
 
     fun setPrice(price: Double) {
         textViewPrice.text = String.format("${context.getString(R.string.turkish_lira)}%.2f", price)
+    }
+    fun getConstraint(): ConstraintLayout {
+        return constraintLayout
+    }
+
+    fun getImage(): ImageView{
+        return imageViewBasket
     }
 }

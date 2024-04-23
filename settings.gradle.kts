@@ -19,7 +19,7 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "Getir Multi Deneme"
+rootProject.name = "Getir Final Project"
 include(":app")
 include(":data")
 include(":domain")

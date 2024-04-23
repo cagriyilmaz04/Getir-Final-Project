@@ -45,7 +45,7 @@ class SharedViewModel @Inject constructor(
                 } else {
                     localRepository.deleteProduct(existingProduct.productId)
                 }
-                getAllProducts()  // Tüm ürünleri yeniden yükle
+                getAllProducts()
             }
         }
     }
@@ -53,14 +53,19 @@ class SharedViewModel @Inject constructor(
     fun deleteProductFromCart(product: ProductEntity) {
         viewModelScope.launch {
             localRepository.deleteProduct(product.productId)
-            getAllProducts()  // Tüm ürünleri yeniden yükle
+            getAllProducts()
         }
     }
 
     fun getAllProducts() {
         viewModelScope.launch {
-            localRepository.getAllProducts().collect { productsList ->
-                _products.value = Resource.Success(productsList)
+            _products.value = Resource.Loading()
+            try {
+                localRepository.getAllProducts().collect { products ->
+                    _products.value = Resource.Success(products)
+                }
+            } catch (e: Exception) {
+                _products.value = Resource.Error("Failed to load products: ${e.localizedMessage}")
             }
         }
     }

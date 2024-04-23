@@ -3,27 +3,91 @@ package com.example.getirmultideneme.details
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.example.data.models.ProductEntity
 import com.example.getirmultideneme.R
+import com.example.getirmultideneme.customview.BasketCustomView
 import com.example.getirmultideneme.databinding.FragmentDetailBinding
 import com.example.getirmultideneme.util.Extension.fadeInView
 import com.example.getirmultideneme.util.Extension.fadeOutView
+import com.example.getirmultideneme.util.Extension.hasVisitedShoppingCart
+import com.example.presentation.base.util.Resource
 import presentation.base.BaseFragment
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class DetailFragment : BaseFragment<FragmentDetailBinding>(FragmentDetailBinding::inflate) {
     private val viewModel: DetailViewModel by viewModels()
+    private fun observeBasketUpdates() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.sharedViewModel.products.collect { resource ->
+                when (resource) {
+                    is Resource.Success -> {
+                        val totalPrice = resource.data.sumOf { it.price * it.quantity }
+                        updateBasketPriceWithAnimation(totalPrice, binding.basketCustom)
+                    }
+                    else -> {}
+                }
+            }
+        }
+    }
+    private var isAnimating = false
+    private fun updateBasketPriceWithAnimation(newPrice: Double,basketCustomView: BasketCustomView) {
+        if (isAnimating) return
 
+        val imageView = basketCustomView.getImage()
+        val constraintLayout = basketCustomView.getConstraint()
+        constraintLayout.post {
+            val originalX = imageView.x
+            val originalY = imageView.y
+            isAnimating = true
+            // Animasyonu başlat
+            imageView.animate()
+                .x(constraintLayout.x)
+                .y(constraintLayout.y)
+                .setDuration(500)
+                .withStartAction {
+                    // constraintLayout3'ün görünürlüğünü gizle
+                    constraintLayout.visibility = View.INVISIBLE
+                }
+                .withEndAction {
+                    // Yeni fiyatı güncelle ve animasyonu geri döndür
+                    basketCustomView.setPrice(newPrice)
+                    imageView.animate()
+                        .x(originalX)
+                        .y(originalY)
+                        .setDuration(500)
+                        .withEndAction {
+                            // constraintLayout3'ü tekrar görünür yap
+                            isAnimating = false
+                            constraintLayout.visibility = View.VISIBLE
+                        }
+                        .start()
+                }
+                .start()
+        }
+    }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        observeBasketUpdates()
         setupInitialViews()
-        binding.imageCancel.setOnClickListener { findNavController().popBackStack() }
+        if(hasVisitedShoppingCart){
+            hasVisitedShoppingCart = false
+            findNavController().navigate(R.id.action_detailFragment_to_productListingFragment)
+        }
+        binding.imageCancel.setOnClickListener {
+            hasVisitedShoppingCart = false
+            findNavController().popBackStack()
+        }
         binding.basketCustom.setOnBasketClickListener {
+            hasVisitedShoppingCart = true
             findNavController().navigate(R.id.action_detailFragment_to_shoppingCartFragment)
         }
+
+
     }
 
     private fun setupInitialViews() {
@@ -48,7 +112,7 @@ class DetailFragment : BaseFragment<FragmentDetailBinding>(FragmentDetailBinding
                 price = productArgs.price,
                 imageURL = productArgs.imageURL!!,
                 description = productArgs.description,
-                quantity = 1  // Başlangıç miktarı
+                quantity = 1
             )
             viewModel.setProduct(newProductEntity)
             viewModel.addProductToCart()

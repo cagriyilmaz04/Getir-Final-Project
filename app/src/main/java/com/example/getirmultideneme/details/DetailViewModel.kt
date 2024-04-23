@@ -8,7 +8,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class DetailViewModel @Inject constructor(
-    private val sharedViewModel: SharedViewModel
+    val sharedViewModel: SharedViewModel
 ) : ViewModel() {
 
     var product: ProductEntity? = null
