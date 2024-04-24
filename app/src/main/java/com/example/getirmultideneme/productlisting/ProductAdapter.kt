@@ -46,15 +46,19 @@ class ProductAdapter(
         fun bind(product: Product) {
             binding.apply {
                 textViewProductName.text = product.name
-                var str = product.attribute.toString()
-                if (product.attribute != null) {
-                    str = product.attribute.toString()
-                }else if (product.description != null) {
-                    str = product.description.toString()
-                } else {
-                    textViewProductAttribute.visibility = View.INVISIBLE
+                val string = StringBuilder()
+                if(product.attribute.toString().equals("null")){
+                    if(!product.description.toString().equals("null")){
+                        Log.e("TAG",product.toString()+" "+product.description)
+                        string.append(product.description.toString())
+                    }else{
+                        textViewProductAttribute.visibility = View.GONE
+                    }
+
+                }else{
+                    string.append(product.attribute.toString())
                 }
-                textViewProductAttribute.text = str
+                textViewProductAttribute.text = string
                 textViewProductPrice.text = String.format("${context.getString(R.string.turkish_lira)}%.2f", product.price)
                 Glide.with(itemView.context).load(product.imageURL).into(imageViewProduct)
 

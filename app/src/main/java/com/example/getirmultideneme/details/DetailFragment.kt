@@ -2,6 +2,7 @@ package com.example.getirmultideneme.details
 
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -10,6 +11,7 @@ import com.bumptech.glide.Glide
 import com.example.data.models.ProductEntity
 import com.example.getirmultideneme.R
 import com.example.getirmultideneme.databinding.FragmentDetailBinding
+import com.example.getirmultideneme.util.Extension.convertToProduct
 import com.example.getirmultideneme.util.Extension.convertToProductEntity
 import com.example.getirmultideneme.util.Extension.fadeInView
 import com.example.getirmultideneme.util.Extension.fadeOutView
@@ -25,6 +27,7 @@ class DetailFragment : BaseFragment<FragmentDetailBinding>(FragmentDetailBinding
     private val viewModel: DetailViewModel by viewModels()
 
     private var id = ""
+    private var productEnt:ProductEntity?=null
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -36,15 +39,31 @@ class DetailFragment : BaseFragment<FragmentDetailBinding>(FragmentDetailBinding
             hasVisitedShoppingCart = false
             findNavController().navigate(R.id.action_detailFragment_to_productListingFragment)
         }
-        binding.basketCustom.constraintBasket.setOnClickListener {
+        binding.basketCustom.setOnBasketCs {
             hasVisitedShoppingCart = true
-            val action = DetailFragmentDirections.actionDetailFragmentToShoppingCartFragment(id)
-            findNavController().navigate(action)
+            if(binding.buttonAddToCart.visibility==View.VISIBLE){
+                val action = DetailFragmentDirections.actionDetailFragmentToShoppingCartFragment("",
+                    convertToProduct(productEnt!!))
+                            findNavController().navigate(action)
+            }else{
+                    val action = DetailFragmentDirections.actionDetailFragmentToShoppingCartFragment(id,
+                        convertToProduct(productEnt!!))
+                    findNavController().navigate(action)
+
+            }
+
+
+
         }
 
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
-                findNavController().navigate(R.id.action_detailFragment_to_productListingFragment)
+                if(hasVisitedShoppingCart){
+                    findNavController().navigate(R.id.action_detailFragment_to_shoppingCartFragment)
+                }else{
+                    findNavController().navigate(R.id.action_detailFragment_to_productListingFragment)
+                }
+
             }
         })
     }
@@ -69,6 +88,7 @@ class DetailFragment : BaseFragment<FragmentDetailBinding>(FragmentDetailBinding
 
             if (productEntity != null) {
                 id = productEntity.productId
+                productEnt = productEntity
                 viewModel.setProduct(productEntity.copy(quantity = quantity))
                 binding.apply {
                     if (quantity >= 1) {

@@ -123,16 +123,16 @@
         <!-- Product Name -->
         <TextView
             android:id="@+id/textViewProductName"
-            android:layout_width="wrap_content"
+            style="@style/ProductTitle"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/textViewProductPrice"
             android:layout_alignStart="@id/textViewProductPrice"
             android:layout_marginTop="4dp"
-            android:text="Product Name"
-            style="@style/ProductTitle"
-            android:singleLine="false"
+            android:ellipsize="end"
             android:maxLines="2"
-            android:ellipsize="end" />
+            android:singleLine="false"
+            android:text="Product Name" />
 
 
         <!-- Product Attribute -->

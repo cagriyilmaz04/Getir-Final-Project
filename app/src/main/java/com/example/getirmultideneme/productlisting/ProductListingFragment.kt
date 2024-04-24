@@ -29,7 +29,7 @@ class ProductListingFragment : BaseFragment<FragmentProductListingBinding>(Fragm
         setupRecyclerView()
         observeProducts()
 
-        binding.basketCustom.setOnBasketClickListener {
+        binding.basketCustom.setOnBasketCs {
             findNavController().navigate(R.id.action_productListingFragment_to_shoppingCartFragment)
         }
     }

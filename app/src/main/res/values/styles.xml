@@ -13,7 +13,7 @@
     </style>
 
     <style name="ProductTitle">
-        <item name="android:textSize">14sp</item>
+        <item name="android:textSize">13sp</item>
         <item name="android:fontFamily">@font/open_sans_semibold</item>
         <item name="android:textColor">@color/text_dark</item>
     </style>

@@ -111,4 +111,13 @@ dependencies {
     implementation("com.github.bumptech.glide:glide:4.16.0")
 
     implementation("com.facebook.shimmer:shimmer:0.5.0")
+
+    testImplementation("org.mockito:mockito-core:3.3.3") // Optional if you use Mockito
+    testImplementation("io.mockk:mockk:1.10.6") // For MockK
+
+    // Needed for LiveData testing
+    testImplementation("androidx.arch.core:core-testing:2.1.0")
+
+    // Coroutine Testing
+    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.4.2")
 }

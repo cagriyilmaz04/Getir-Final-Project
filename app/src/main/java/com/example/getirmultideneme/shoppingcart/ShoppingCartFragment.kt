@@ -108,7 +108,13 @@ class ShoppingCartFragment : BaseFragment<FragmentShoppingCartBinding>
     private fun getSynchronization() {
         if(hasVisitedShoppingCart == true){
             viewLifecycleOwner.lifecycleScope.launch {
-                val id = ShoppingCartFragmentArgs.fromBundle(requireArguments()).id
+                val bundle = ShoppingCartFragmentArgs.fromBundle(requireArguments())
+
+                val id = bundle.id
+                if(id==""){
+                    val action = ShoppingCartFragmentDirections.actionShoppingCartFragmentToDetailFragment(bundle.productEntity)
+                    findNavController().navigate(action)
+                }
                 viewModel.getProductById(id).collect{
                     if(it!=null){
                         val product = convertToProduct(it)
