@@ -74,12 +74,16 @@ class DetailFragment : BaseFragment<FragmentDetailBinding>(FragmentDetailBinding
     private fun observeBasketUpdates() {
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.sharedViewModel.products.collect { resource ->
-                when (resource) {
-                    is Resource.Success -> {
-                        val totalPrice = resource.data.sumOf { it.price * it.quantity }
-                        updateBasketPriceWithAnimation(totalPrice, binding.basketCustom)
+                if (isAdded && isVisible && view != null) {
+                    when (resource) {
+                        is Resource.Success -> {
+                            val totalPrice = resource.data.sumOf { it.price * it.quantity }
+                            val totalQuantity = resource.data.sumOf { it.quantity }
+                            updateBasketPriceWithAnimation(totalPrice, binding.basketCustom)
+                            binding.basketCustom.constraintBasket.isEnabled = totalQuantity > 0
+                        }
+                        else -> {}
                     }
-                    else -> {}
                 }
             }
         }
