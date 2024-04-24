@@ -28,11 +28,9 @@ Unit tests for `SharedViewModel` validate the business logic around product inte
 - **Coroutines**: Tests asynchronous logic using `kotlinx-coroutines-test` for managing coroutine scopes in tests.
 ## Screenshots
 
-![Product Listing Screen](4.jpg)
-![Product Listing Screen New](5.jpg)
-![Detail Screen](1.jpg)
-![Detail Screen New](3.jpg)
-![Shopping Cart Screen](2.jpg)
-![Shopping Cart Screen](6.jpg)
+| ![Product Listing Screen](4.jpg) | ![Product Listing Screen New](5.jpg) |
+|----------------------------------|--------------------------------------|
+| ![Detail Screen](1.jpg)         | ![Detail Screen New](3.jpg)          |
+| ![Shopping Cart Screen](2.jpg)  | ![Shopping Cart Screen](6.jpg)       |
 
 
