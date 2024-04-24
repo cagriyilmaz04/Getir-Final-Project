@@ -18,6 +18,7 @@ This project was developed as part of the Getir and Patika bootcamp. It showcase
 - **Retrofit**: Used for network operations.
 - **Jetpack Components**: Includes LiveData, Navigation, ViewModel, etc., for lifecycle management and UI.
 - **Espresso & JUnit**: Used for comprehensive unit and UI testing.
+- **Ktlint**: To fix warning and seems good style
 
 ## Shimmer RecyclerView
 The Shimmer effect is implemented using the ShimmerRecyclerView library, providing an animated loading placeholder before data retrieval completes.
