@@ -25,7 +25,7 @@ class ShoppingCartViewModel @Inject constructor(
         loadProducts()
     }
 
-    private fun loadProducts() {
+    fun loadProducts() {
         viewModelScope.launch {
             postState(Resource.Loading())
             try {
