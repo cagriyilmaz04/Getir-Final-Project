@@ -34,4 +34,4 @@ Unit tests for `SharedViewModel` validate the business logic around product inte
 | ![Detail Screen](1.jpg)         | ![Detail Screen New](3.jpg)          |
 | ![Shopping Cart Screen](2.jpg)  | ![Shopping Cart Screen](6.jpg)       |
 
-
+https://github.com/cagriyilmaz04/Getir-Final-Project/blob/master/video.mp4
