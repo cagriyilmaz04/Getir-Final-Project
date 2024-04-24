@@ -1,4 +1,4 @@
-# Getir Android Kotlin Bootcamp w2 v2 Assignment
+# Getir Android Kotlin Bootcamp Final Project
 
 
 ## Project Overview
