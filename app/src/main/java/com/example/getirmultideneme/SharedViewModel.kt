@@ -5,6 +5,7 @@ import com.example.data.models.ProductEntity
 import com.example.data.repository.LocalProductRepository
 import com.example.presentation.base.BaseViewModel
 import com.example.presentation.base.util.Resource
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -77,4 +78,8 @@ class SharedViewModel @Inject constructor(
             getAllProducts()  // Tüm ürünleri yeniden yükle
         }
     }
+    fun getProductById(productId: String): Flow<ProductEntity?> {
+        return localRepository.getProductById(productId)
+    }
+
 }

@@ -1,9 +1,11 @@
 package com.example.getirmultideneme.details
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.data.models.ProductEntity
 import com.example.getirmultideneme.SharedViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -37,4 +39,7 @@ class DetailViewModel @Inject constructor(
             sharedViewModel.deleteProductFromCart(it)
         }
     }
+
+
+
 }

@@ -5,16 +5,20 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
+import androidx.navigation.NavController
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.data.models.ProductEntity
 import com.example.getirmultideneme.R
 import com.example.getirmultideneme.databinding.RecyclerRowBasketBinding
+import com.example.getirmultideneme.productlisting.ProductListingFragmentDirections
+import com.example.getirmultideneme.util.Extension.convertToProduct
 
 class ShoppingCartAdapter(
     var products: ArrayList<ProductEntity>,
     private val viewModel: ShoppingCartViewModel,
-    val context: Context
+    val context: Context,
+    val navController: NavController
 ) : RecyclerView.Adapter<ShoppingCartAdapter.ViewHolder>() {
 
     fun setProducts(newProducts: List<ProductEntity>) {
@@ -61,6 +65,10 @@ class ShoppingCartAdapter(
                     } else {
                         removeItemWithAnimation(product)
                     }
+                }
+                csClick.setOnClickListener {
+                    val action = ShoppingCartFragmentDirections.actionShoppingCartFragmentToDetailFragment(convertToProduct(product),textQuantity.text.toString().toInt())
+                    navController.navigate(action)
                 }
             }
         }

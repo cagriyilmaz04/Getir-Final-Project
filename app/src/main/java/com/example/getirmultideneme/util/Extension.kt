@@ -42,37 +42,52 @@ object Extension {
     }
 
     fun convertToProductEntity(product: Product): ProductEntity {
-        val productEntity = ProductEntity(productId = product.id,
+        val productEntity = ProductEntity(
+            productId = product.id,
             name = product.name,
             attribute = product.attribute.toString(),
             thumbnailURL = product.thumbnailURL,
             price = product.price,
             imageURL = product.imageURL.toString(),
             description = product.description,
-            quantity = 1)
+            quantity = 1
+        )
 
         return productEntity
     }
 
-    fun convertToProductSuggestedToEntity(product: SuggestedProduct):ProductEntity {
+    fun convertToProduct(productEntity: ProductEntity):Product{
+        val product = Product (id = productEntity.productId.toString(),
+            name = productEntity.name,
+            attribute = productEntity.attribute,
+            thumbnailURL = productEntity.thumbnailURL,
+            price = productEntity.price,
+            priceText = "",
+            imageURL = productEntity.imageURL,
+            description = productEntity.description)
+        return product
+
+    }
+
+    fun convertToProductSuggestedToEntity(product: SuggestedProduct): ProductEntity {
         val prod = convertToProduct(product)
         return convertToProductEntity(prod)
     }
 
-    fun fadeInView(view: View,context: Context) {
+    fun fadeInView(view: View, context: Context) {
         val fadeInAnimation = AnimationUtils.loadAnimation(context, R.anim.fade_in)
         view.startAnimation(fadeInAnimation)
         view.visibility = View.VISIBLE
     }
 
-    fun fadeOutView(view: View,context: Context) {
+    fun fadeOutView(view: View, context: Context) {
         val fadeOutAnimation = AnimationUtils.loadAnimation(context, R.anim.fade_out)
         view.startAnimation(fadeOutAnimation)
         view.visibility = View.GONE
     }
 
     private var isAnimating = false
-    fun updateBasketPriceWithAnimation(newPrice: Double,basketCustomView: BasketCustomView) {
+    fun updateBasketPriceWithAnimation(newPrice: Double, basketCustomView: BasketCustomView) {
         if (isAnimating) return
 
         val imageView = basketCustomView.getImage()
@@ -105,5 +120,4 @@ object Extension {
                 .start()
         }
     }
-
 }

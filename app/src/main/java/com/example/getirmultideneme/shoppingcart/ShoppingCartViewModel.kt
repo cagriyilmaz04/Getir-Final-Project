@@ -6,6 +6,7 @@ import com.example.getirmultideneme.SharedViewModel
 import com.example.presentation.base.BaseViewModel
 import com.example.presentation.base.util.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -59,5 +60,10 @@ class ShoppingCartViewModel @Inject constructor(
                 postState(Resource.Error("Failed to delete all products: ${e.localizedMessage}"))
             }
         }
+    }
+
+    fun getProductById(productId: String): Flow<ProductEntity?> {
+        // Delegate to SharedViewModel to fetch the product by ID
+        return sharedViewModel.getProductById(productId)
     }
 }

@@ -16,6 +16,7 @@ import presentation.base.BaseFragment
 import dagger.hilt.android.AndroidEntryPoint
 import android.annotation.SuppressLint
 import androidx.activity.OnBackPressedCallback
+import com.example.getirmultideneme.util.Extension.convertToProduct
 import com.example.getirmultideneme.util.Extension.hasVisitedShoppingCart
 import kotlinx.coroutines.launch
 
@@ -33,7 +34,7 @@ class ShoppingCartFragment : BaseFragment<FragmentShoppingCartBinding>
         observeViewModel()
 
         binding.imageBack.setOnClickListener {
-            findNavController().popBackStack()
+
         }
         binding.imageDelete.setOnClickListener {
             viewModel.deleteAllProducts()
@@ -41,14 +42,14 @@ class ShoppingCartFragment : BaseFragment<FragmentShoppingCartBinding>
         }
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
-                hasVisitedShoppingCart = false
-                findNavController().popBackStack()
+                getSynchronization()
             }
         })
     }
 
     private fun setupRecyclerViews() {
-        shoppingCartAdapter = ShoppingCartAdapter(ArrayList(), viewModel, requireContext())
+        val navigation = findNavController()
+        shoppingCartAdapter = ShoppingCartAdapter(ArrayList(), viewModel, requireContext(),navigation)
         binding.recyclerViewLocal.apply {
             layoutManager = LinearLayoutManager(context)
             adapter = shoppingCartAdapter
@@ -77,6 +78,21 @@ class ShoppingCartFragment : BaseFragment<FragmentShoppingCartBinding>
                     }
                 }
             }
+        }
+    }
+
+    private fun getSynchronization() {
+        if(hasVisitedShoppingCart == true){
+            viewLifecycleOwner.lifecycleScope.launch {
+                val id = ShoppingCartFragmentArgs.fromBundle(requireArguments()).id
+                viewModel.getProductById(id).collect{
+                    val product = convertToProduct(it!!)
+                    val action = ShoppingCartFragmentDirections.actionShoppingCartFragmentToDetailFragment(product,it!!.quantity)
+                    findNavController().navigate(action)
+                }
+            }
+        }else{
+            findNavController().navigate(R.id.action_shoppingCartFragment_to_productListingFragment)
         }
     }
 }

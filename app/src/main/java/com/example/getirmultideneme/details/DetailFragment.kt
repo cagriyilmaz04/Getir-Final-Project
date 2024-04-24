@@ -2,7 +2,7 @@ package com.example.getirmultideneme.details
 
 import android.os.Bundle
 import android.view.View
-import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -36,27 +36,29 @@ class DetailFragment : BaseFragment<FragmentDetailBinding>(FragmentDetailBinding
             }
         }
     }
-
+    private var id = ""
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        if(hasVisitedShoppingCart){
-            hasVisitedShoppingCart = false
-            findNavController().navigate(R.id.action_detailFragment_to_productListingFragment)
-        }
+
 
         observeBasketUpdates()
         setupInitialViews()
 
         binding.imageCancel.setOnClickListener {
             hasVisitedShoppingCart = false
-            findNavController().popBackStack()
+            findNavController().navigate(R.id.action_detailFragment_to_productListingFragment)
         }
         binding.basketCustom.setOnBasketClickListener {
             hasVisitedShoppingCart = true
-            findNavController().navigate(R.id.action_detailFragment_to_shoppingCartFragment)
+            val action = DetailFragmentDirections.actionDetailFragmentToShoppingCartFragment(id)
+            findNavController().navigate(action)
         }
 
-
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                findNavController().navigate(R.id.action_detailFragment_to_productListingFragment)
+            }
+        })
     }
 
     private fun setupInitialViews() {
@@ -66,6 +68,7 @@ class DetailFragment : BaseFragment<FragmentDetailBinding>(FragmentDetailBinding
             val quantity = args.quantity
 
             if (productEntity != null) {
+                id = productEntity.productId
                 viewModel.setProduct(productEntity.copy(quantity = quantity))
                 binding.apply {
                     if (quantity >= 1) {
@@ -91,7 +94,7 @@ class DetailFragment : BaseFragment<FragmentDetailBinding>(FragmentDetailBinding
                                 viewModel.addProductToCart()
                                 fadeInView(binding.layoutQuantitySelector, requireContext())
                                 fadeOutView(binding.buttonAddToCart, requireContext())
-                                updateUI(newProductEntity, 1)  // UI'yi güncelleyin, miktar şimdi 1 olmalı
+                                updateUI(newProductEntity, 1)
                             }
                         }
                     }
@@ -106,11 +109,21 @@ class DetailFragment : BaseFragment<FragmentDetailBinding>(FragmentDetailBinding
                     Glide.with(requireContext()).load(productEntity.imageURL ?: productEntity.thumbnailURL).into(imageProduct)
                     textProductPrice.text = String.format("₺%.2f", productEntity.price)
                     textProductName.text = productEntity.name
-                    textProductAttribute.text = productEntity.attribute ?: ""
-                    textProductAttribute.visibility = if (productEntity.attribute.isNullOrEmpty()) View.INVISIBLE else View.VISIBLE
+                    val string = StringBuilder()
+                    if(productEntity.attribute.toString().equals("null")){
+                        if(!productEntity.description.toString().equals("null")){
+                            string.append(productEntity.description.toString())
+                        }else{
+                            textProductAttribute.visibility = View.INVISIBLE
+                        }
+                    }else{
+                        string.append(productEntity.attribute.toString())
+                    }
+                    textProductAttribute.text = string
+                    //textProductAttribute.text = productEntity.attribute ?: ""
+                    //textProductAttribute.visibility = if (productEntity.attribute.toString().equals("null")) View.INVISIBLE else View.VISIBLE
                 }
             } else {
-                Toast.makeText(context, "Ürün bilgisi yüklenemedi.", Toast.LENGTH_SHORT).show()
                 findNavController().popBackStack()
             }
         }
@@ -137,7 +150,5 @@ class DetailFragment : BaseFragment<FragmentDetailBinding>(FragmentDetailBinding
 
     override fun onResume() {
         super.onResume()
-
     }
-
 }

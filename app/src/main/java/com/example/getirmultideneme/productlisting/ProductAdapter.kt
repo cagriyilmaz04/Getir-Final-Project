@@ -4,7 +4,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewAnimationUtils
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.navigation.NavController
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -52,11 +51,10 @@ class ProductAdapter(
                     str = product.attribute.toString()
                 }else if (product.description != null) {
                     str = product.description.toString()
-                }else {
+                } else {
                     textViewProductAttribute.visibility = View.INVISIBLE
                 }
                 textViewProductAttribute.text = str
-                Log.e("TAG",product.toString())
                 textViewProductPrice.text = String.format("${context.getString(R.string.turkish_lira)}%.2f", product.price)
                 Glide.with(itemView.context).load(product.imageURL).into(imageViewProduct)
 
@@ -90,7 +88,6 @@ class ProductAdapter(
                     }
                 }else{
                     imageViewBackground.setBackgroundResource(R.drawable.constraint_background_transition)
-
                 }
 
                 buttonIncrease.setOnClickListener {
