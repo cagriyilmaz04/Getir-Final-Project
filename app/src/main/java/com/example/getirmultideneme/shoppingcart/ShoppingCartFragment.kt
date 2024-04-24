@@ -15,6 +15,7 @@ import com.example.presentation.base.util.Resource
 import presentation.base.BaseFragment
 import dagger.hilt.android.AndroidEntryPoint
 import android.annotation.SuppressLint
+import android.util.Log
 import androidx.activity.OnBackPressedCallback
 import com.example.getirmultideneme.customview.CustomAlertDialog
 import com.example.getirmultideneme.util.Extension.convertToProduct
@@ -109,25 +110,25 @@ class ShoppingCartFragment : BaseFragment<FragmentShoppingCartBinding>
         if(hasVisitedShoppingCart == true){
             viewLifecycleOwner.lifecycleScope.launch {
                 val bundle = ShoppingCartFragmentArgs.fromBundle(requireArguments())
-
                 val id = bundle.id
-                if(id==""){
-                    val action = ShoppingCartFragmentDirections.actionShoppingCartFragmentToDetailFragment(bundle.productEntity)
-                    findNavController().navigate(action)
-                }
-                viewModel.getProductById(id).collect{
-                    if(it!=null){
-                        val product = convertToProduct(it)
-                        val action = ShoppingCartFragmentDirections.actionShoppingCartFragmentToDetailFragment(product,
-                            it.quantity)
-                        findNavController().navigate(action)
-                    }else {
-                        findNavController().navigate(R.id.action_shoppingCartFragment_to_productListingFragment)
-                    }
+                if(!id.toString().equals("null")){
+                    viewModel.getProductById(id).collect{
+                        if(it!=null){
+                            val product = convertToProduct(it)
+                            val action = ShoppingCartFragmentDirections.actionShoppingCartFragmentToDetailFragment(product,
+                                it.quantity)
+                            findNavController().navigate(action)
+                        }else {
+                            findNavController().navigate(R.id.action_shoppingCartFragment_to_productListingFragment)
+                        }
 
+                    }
+                }else{
+                    findNavController().navigate(R.id.action_shoppingCartFragment_to_productListingFragment)
                 }
+
             }
-        }else{
+        } else{
             findNavController().navigate(R.id.action_shoppingCartFragment_to_productListingFragment)
         }
     }

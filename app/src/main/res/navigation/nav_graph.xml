@@ -68,7 +68,8 @@
             app:destination="@id/detailFragment" />
         <argument
             android:name="id"
-            app:argType="string" />
+            app:argType="string"
+             />
         <argument
             android:name="productEntity"
             app:argType="com.example.data.models.Product" />

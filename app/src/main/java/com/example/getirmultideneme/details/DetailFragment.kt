@@ -42,7 +42,7 @@ class DetailFragment : BaseFragment<FragmentDetailBinding>(FragmentDetailBinding
         binding.basketCustom.setOnBasketCs {
             hasVisitedShoppingCart = true
             if(binding.buttonAddToCart.visibility==View.VISIBLE){
-                val action = DetailFragmentDirections.actionDetailFragmentToShoppingCartFragment("",
+                val action = DetailFragmentDirections.actionDetailFragmentToShoppingCartFragment("null",
                     convertToProduct(productEnt!!))
                             findNavController().navigate(action)
             }else{
@@ -51,15 +51,17 @@ class DetailFragment : BaseFragment<FragmentDetailBinding>(FragmentDetailBinding
                     findNavController().navigate(action)
 
             }
-
-
-
+        }
+        binding.buttonAddToCart.setOnClickListener {
+            addFirstItem()
         }
 
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
                 if(hasVisitedShoppingCart){
-                    findNavController().navigate(R.id.action_detailFragment_to_shoppingCartFragment)
+                    val action = DetailFragmentDirections.actionDetailFragmentToShoppingCartFragment(id,
+                        convertToProduct(productEnt!!))
+                    findNavController().navigate(action)
                 }else{
                     findNavController().navigate(R.id.action_detailFragment_to_productListingFragment)
                 }
@@ -85,7 +87,6 @@ class DetailFragment : BaseFragment<FragmentDetailBinding>(FragmentDetailBinding
             val args = DetailFragmentArgs.fromBundle(it)
             val productEntity = args.product?.let { convertToProductEntity(it) }
             val quantity = args.quantity
-
             if (productEntity != null) {
                 id = productEntity.productId
                 productEnt = productEntity
@@ -97,26 +98,7 @@ class DetailFragment : BaseFragment<FragmentDetailBinding>(FragmentDetailBinding
                     } else {
                         buttonAddToCart.visibility = View.VISIBLE
                         layoutQuantitySelector.visibility = View.INVISIBLE
-                        buttonAddToCart.setOnClickListener {
-                            val productArgs = DetailFragmentArgs.fromBundle(requireArguments()).product
-                            if (productArgs != null) {
-                                val newProductEntity = ProductEntity(
-                                    name = productArgs.name,
-                                    productId = productArgs.id,
-                                    attribute = productArgs.attribute,
-                                    thumbnailURL = productArgs.thumbnailURL,
-                                    price = productArgs.price,
-                                    imageURL = productArgs.imageURL!!,
-                                    description = productArgs.description,
-                                    quantity = 1  // Burada miktarı doğrudan 1 olarak ayarlıyoruz
-                                )
-                                viewModel.setProduct(newProductEntity)
-                                viewModel.addProductToCart()
-                                fadeInView(binding.layoutQuantitySelector, requireContext())
-                                fadeOutView(binding.buttonAddToCart, requireContext())
-                                updateUI(newProductEntity, 1)
-                            }
-                        }
+
                     }
                     buttonIncrease.setOnClickListener {
                         updateQuantity(true)
@@ -147,12 +129,7 @@ class DetailFragment : BaseFragment<FragmentDetailBinding>(FragmentDetailBinding
         }
     }
 
-    private fun updateQuantity(increase: Boolean) {
-        viewModel.updateQuantity(increase)
-        val currentQuantity = viewModel.product?.quantity ?: 0
-        binding.textQuantity.text = currentQuantity.toString()
-        updateUI(viewModel.product!!, currentQuantity)
-    }
+
     private fun updateUI(product: ProductEntity, quantity: Int) {
         binding.apply {
             buttonAddToCart.visibility = if (quantity > 0) View.INVISIBLE else View.VISIBLE
@@ -164,5 +141,51 @@ class DetailFragment : BaseFragment<FragmentDetailBinding>(FragmentDetailBinding
             )
         }
     }
+    private fun updateQuantity(increase: Boolean) {
+        viewModel.updateQuantity(increase)
+        val currentQuantity = viewModel.product?.quantity ?: 0
+        binding.textQuantity.text = currentQuantity.toString()
+        updateUI(viewModel.product!!, currentQuantity)
+    }
+    private fun addFirstItem() {
+            val productArgs = DetailFragmentArgs.fromBundle(requireArguments()).product
+        val productEntity = productArgs?.let { convertToProductEntity(it) }
+        val quantity = productEntity!!.quantity
+            if (productArgs != null) {
+                val newProductEntity = ProductEntity(
+                    name = productArgs.name,
+                    productId = productArgs.id,
+                    attribute = productArgs.attribute,
+                    thumbnailURL = productArgs.thumbnailURL,
+                    price = productArgs.price,
+                    imageURL = productArgs.imageURL!!,
+                    description = productArgs.description,
+                    quantity = 1  // Burada miktarı doğrudan 1 olarak ayarlıyoruz
+                )
+                viewModel.setProduct(newProductEntity)
+                viewModel.addProductToCart()
+                fadeInView(binding.layoutQuantitySelector, requireContext())
+                fadeOutView(binding.buttonAddToCart, requireContext())
+                updateUI(newProductEntity, 1)
+                with(binding){
+                    textQuantity.text = quantity.toString()
+                    Glide.with(requireContext()).load(productEntity.imageURL ?: productEntity.thumbnailURL).into(imageProduct)
+                    textProductPrice.text = String.format("₺%.2f", productEntity.price)
+                    textProductName.text = productEntity.name
+                    val string = StringBuilder()
+                    if(productEntity.attribute.toString().equals("null")){
+                        if(!productEntity.description.toString().equals("null")){
+                            string.append(productEntity.description.toString())
+                        }else{
+                            textProductAttribute.visibility = View.INVISIBLE
+                        }
+                    }else{
+                        string.append(productEntity.attribute.toString())
+                    }
+                    textProductAttribute.text = string
+                }
+
+            }
+        }
 
 }
