@@ -53,11 +53,11 @@ class ProductListingFragment : BaseFragment<FragmentProductListingBinding>(Fragm
             viewModel.state.collect { resource ->
                 when (resource) {
                     is Resource.Loading -> {
-                        toggleShimmerEffect(true,binding.rvShimmer,binding.verticalRecyclerView)
+                        toggleShimmerEffect(true, binding.rvShimmer, binding.verticalRecyclerView)
 
                     }
                     is Resource.Success -> {
-                        toggleShimmerEffect(false,binding.rvShimmer,binding.verticalRecyclerView)
+                        toggleShimmerEffect(false, binding.rvShimmer, binding.verticalRecyclerView)
                         (binding.verticalRecyclerView.adapter as? ProductAdapter)?.updateData(resource.data)
                     }
                     is Resource.Error -> {
@@ -77,7 +77,7 @@ class ProductListingFragment : BaseFragment<FragmentProductListingBinding>(Fragm
                     is Resource.Success -> {
 
                        toggleShimmerEffect(false,binding.rvShimmerHorizontal,binding.rvSuggestedProducts)
-                       (binding.rvSuggestedProducts.adapter as? SuggestedProductAdapter)?.updateData(resource.data)
+                        (binding.rvSuggestedProducts.adapter as? SuggestedProductAdapter)?.updateData(resource.data)
                     }
                     is Resource.Error -> {
                         Toast.makeText(context, "Error loading suggested products: ${resource.message}", Toast.LENGTH_LONG).show()
@@ -104,7 +104,7 @@ class ProductListingFragment : BaseFragment<FragmentProductListingBinding>(Fragm
         }
     }
 
-    fun toggleShimmerEffect(show: Boolean,rvShimmer:ShimmerFrameLayout,rv:RecyclerView) {
+    fun toggleShimmerEffect(show: Boolean, rvShimmer: ShimmerFrameLayout, rv:RecyclerView) {
         if (show) {
             rvShimmer.visibility = View.VISIBLE
             rvShimmer.startLayoutAnimation()

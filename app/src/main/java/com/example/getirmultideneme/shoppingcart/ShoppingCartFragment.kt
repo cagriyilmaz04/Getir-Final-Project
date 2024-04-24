@@ -37,7 +37,7 @@ class ShoppingCartFragment : BaseFragment<FragmentShoppingCartBinding>
         }
         binding.imageDelete.setOnClickListener {
             viewModel.deleteAllProducts()
-                findNavController().navigate(R.id.action_shoppingCartFragment_to_productListingFragment)
+            findNavController().navigate(R.id.action_shoppingCartFragment_to_productListingFragment)
         }
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
@@ -49,7 +49,6 @@ class ShoppingCartFragment : BaseFragment<FragmentShoppingCartBinding>
 
     private fun setupRecyclerViews() {
         shoppingCartAdapter = ShoppingCartAdapter(ArrayList(), viewModel, requireContext())
-
         binding.recyclerViewLocal.apply {
             layoutManager = LinearLayoutManager(context)
             adapter = shoppingCartAdapter

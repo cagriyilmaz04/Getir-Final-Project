@@ -9,7 +9,6 @@ import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.example.data.models.ProductEntity
 import com.example.getirmultideneme.R
-import com.example.getirmultideneme.customview.BasketCustomView
 import com.example.getirmultideneme.databinding.FragmentDetailBinding
 import com.example.getirmultideneme.util.Extension.convertToProductEntity
 import com.example.getirmultideneme.util.Extension.fadeInView
@@ -116,7 +115,6 @@ class DetailFragment : BaseFragment<FragmentDetailBinding>(FragmentDetailBinding
             }
         }
     }
-
 
     private fun updateQuantity(increase: Boolean) {
         viewModel.updateQuantity(increase)

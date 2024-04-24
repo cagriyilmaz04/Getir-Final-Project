@@ -29,7 +29,7 @@
             app:cardCornerRadius="8dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/textView2"
+            app:layout_constraintStart_toEndOf="@+id/textViewProducts"
             app:layout_constraintTop_toTopOf="parent">
 
             <com.example.getirmultideneme.customview.BasketCustomView
@@ -44,7 +44,7 @@
         </androidx.cardview.widget.CardView>
 
         <TextView
-            android:id="@+id/textView2"
+            android:id="@+id/textViewProducts"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/open_sans_bold"
@@ -146,34 +146,21 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
+                <include layout="@layout/shimmer_recycler_row" />
+                <include layout="@layout/shimmer_recycler_row" />
                 <include layout="@layout/shimmer_recycler_row">
-
                 </include>
 
-                <include layout="@layout/shimmer_recycler_row">
-
-                </include>
-
-                <include layout="@layout/shimmer_recycler_row">
-
-                </include>
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <include layout="@layout/shimmer_recycler_row">
+                <include layout="@layout/shimmer_recycler_row" />
+                <include layout="@layout/shimmer_recycler_row" />
+                <include layout="@layout/shimmer_recycler_row" />
 
-                </include>
-
-                <include layout="@layout/shimmer_recycler_row">
-
-                </include>
-
-                <include layout="@layout/shimmer_recycler_row">
-
-                </include>
             </LinearLayout>
 
         </LinearLayout>

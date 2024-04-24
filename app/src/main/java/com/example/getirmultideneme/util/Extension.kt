@@ -28,7 +28,7 @@ object Extension {
         }
     }
 
-    fun convertToProduct(suggestedProduct: SuggestedProduct):Product{
+    fun convertToProduct(suggestedProduct: SuggestedProduct): Product{
         val product = Product(id = suggestedProduct.id,
             name = suggestedProduct.name,
             attribute = null,
@@ -37,7 +37,7 @@ object Extension {
             priceText = suggestedProduct.priceText,
             imageURL = suggestedProduct.imageURL,
             description = suggestedProduct.shortDescription,
-    )
+        )
         return product
     }
 
@@ -59,7 +59,7 @@ object Extension {
         return convertToProductEntity(prod)
     }
 
-     fun fadeInView(view: View,context: Context) {
+    fun fadeInView(view: View,context: Context) {
         val fadeInAnimation = AnimationUtils.loadAnimation(context, R.anim.fade_in)
         view.startAnimation(fadeInAnimation)
         view.visibility = View.VISIBLE
@@ -105,6 +105,5 @@ object Extension {
                 .start()
         }
     }
-
 
 }

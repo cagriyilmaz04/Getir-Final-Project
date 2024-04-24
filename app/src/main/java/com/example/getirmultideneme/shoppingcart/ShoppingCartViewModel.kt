@@ -28,7 +28,7 @@ class ShoppingCartViewModel @Inject constructor(
         viewModelScope.launch {
             postState(Resource.Loading())
             try {
-                sharedViewModel.getAllProducts()  // Burada state güncellemesi tetikleniyor
+                sharedViewModel.getAllProducts()
                 sharedViewModel.products.collect { resource ->
                     _products.value = resource
                 }
@@ -38,13 +38,12 @@ class ShoppingCartViewModel @Inject constructor(
         }
     }
 
-
     fun deleteProduct(product: ProductEntity) {
-        sharedViewModel.deleteProductFromCart(product) // Use SharedViewModel to handle deletion
+        sharedViewModel.deleteProductFromCart(product)
     }
 
     fun increaseQuantity(product: ProductEntity) {
-        sharedViewModel.updateQuantity(product, true) // Use SharedViewModel to increase quantity
+        sharedViewModel.updateQuantity(product, true)
     }
 
     fun decreaseQuantity(product: ProductEntity) {

@@ -48,9 +48,9 @@ class ProductAdapter(
             binding.apply {
                 textViewProductName.text = product.name
                 var str = product.attribute.toString()
-                if(product.attribute != null){
+                if (product.attribute != null) {
                     str = product.attribute.toString()
-                }else if(product.description != null){
+                }else if (product.description != null) {
                     str = product.description.toString()
                 }else {
                     textViewProductAttribute.visibility = View.INVISIBLE
@@ -132,7 +132,5 @@ class ProductAdapter(
         private fun updateDecreaseButtonIcon(quantity: Int) {
             binding.buttonDecrease.setImageResource(if (quantity > 1) R.drawable.subtract else R.drawable.trash_small)
         }
-
     }
-
 }
