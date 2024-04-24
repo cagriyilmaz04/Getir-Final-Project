@@ -16,6 +16,7 @@ import presentation.base.BaseFragment
 import dagger.hilt.android.AndroidEntryPoint
 import android.annotation.SuppressLint
 import androidx.activity.OnBackPressedCallback
+import com.example.getirmultideneme.customview.CustomAlertDialog
 import com.example.getirmultideneme.util.Extension.convertToProduct
 import com.example.getirmultideneme.util.Extension.hasVisitedShoppingCart
 import kotlinx.coroutines.launch
@@ -26,7 +27,7 @@ class ShoppingCartFragment : BaseFragment<FragmentShoppingCartBinding>
 (FragmentShoppingCartBinding::inflate) {
     private val viewModel: ShoppingCartViewModel by viewModels()
     private lateinit var shoppingCartAdapter: ShoppingCartAdapter
-
+    private var customAlertDialog: CustomAlertDialog? = null
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -34,11 +35,34 @@ class ShoppingCartFragment : BaseFragment<FragmentShoppingCartBinding>
         observeViewModel()
 
         binding.imageBack.setOnClickListener {
-
+                getSynchronization()
         }
+        customAlertDialog = CustomAlertDialog(requireContext())
         binding.imageDelete.setOnClickListener {
-            viewModel.deleteAllProducts()
-            findNavController().navigate(R.id.action_shoppingCartFragment_to_productListingFragment)
+            lifecycleScope.launch {
+                viewModel.products.collect{ resource ->
+                    if(resource is Resource.Success){
+                        val data = resource.data as ArrayList<ProductEntity>
+                        if(data.isNotEmpty()){
+
+                            customAlertDialog?.let {
+                                it.show()
+                                it.setOnYesClick {
+                                    viewModel.deleteAllProducts()
+                                    customAlertDialog!!.dismiss()
+                                    customAlertDialog = null
+                                    findNavController().navigate(R.id.action_shoppingCartFragment_to_productListingFragment)
+                                }
+
+                                it.setOnNoClick {
+                                    customAlertDialog!!.dismiss()
+                                    customAlertDialog = null
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
@@ -65,13 +89,13 @@ class ShoppingCartFragment : BaseFragment<FragmentShoppingCartBinding>
                     }
                     is Resource.Success -> {
                         shoppingCartAdapter.products = resource.data as ArrayList<ProductEntity>
-                        shoppingCartAdapter.notifyDataSetChanged() // Ensure this is called.
+                        shoppingCartAdapter.notifyDataSetChanged()
                         if (resource.data.isEmpty()) {
-                            Toast.makeText(context, "The cart is now empty.", Toast.LENGTH_SHORT).show()
+                            //Toast.makeText(context, "The cart is now empty.", Toast.LENGTH_SHORT).show()
                         }
                         val turkishLira = requireContext().getString(R.string.turkish_lira)
                         val price = calculatePrice(shoppingCartAdapter.products)
-                        binding.textViewPrice.text = String.format(turkishLira + "%.2f", price)
+                        binding.textViewPrice.text = String.format("$turkishLira%.2f", price)
                     }
                     is Resource.Error -> {
                         Toast.makeText(context, resource.message, Toast.LENGTH_LONG).show()
@@ -86,13 +110,26 @@ class ShoppingCartFragment : BaseFragment<FragmentShoppingCartBinding>
             viewLifecycleOwner.lifecycleScope.launch {
                 val id = ShoppingCartFragmentArgs.fromBundle(requireArguments()).id
                 viewModel.getProductById(id).collect{
-                    val product = convertToProduct(it!!)
-                    val action = ShoppingCartFragmentDirections.actionShoppingCartFragmentToDetailFragment(product,it!!.quantity)
-                    findNavController().navigate(action)
+                    if(it!=null){
+                        val product = convertToProduct(it)
+                        val action = ShoppingCartFragmentDirections.actionShoppingCartFragmentToDetailFragment(product,
+                            it.quantity)
+                        findNavController().navigate(action)
+                    }else {
+                        findNavController().navigate(R.id.action_shoppingCartFragment_to_productListingFragment)
+                    }
+
                 }
             }
         }else{
             findNavController().navigate(R.id.action_shoppingCartFragment_to_productListingFragment)
         }
     }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        customAlertDialog?.dismiss()
+        customAlertDialog = null
+    }
+
 }

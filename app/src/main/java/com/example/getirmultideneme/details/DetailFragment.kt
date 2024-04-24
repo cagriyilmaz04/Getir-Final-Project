@@ -23,6 +23,31 @@ import kotlinx.coroutines.launch
 @AndroidEntryPoint
 class DetailFragment : BaseFragment<FragmentDetailBinding>(FragmentDetailBinding::inflate) {
     private val viewModel: DetailViewModel by viewModels()
+
+    private var id = ""
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+
+        observeBasketUpdates()
+        setupInitialViews()
+
+        binding.imageCancel.setOnClickListener {
+            hasVisitedShoppingCart = false
+            findNavController().navigate(R.id.action_detailFragment_to_productListingFragment)
+        }
+        binding.basketCustom.constraintBasket.setOnClickListener {
+            hasVisitedShoppingCart = true
+            val action = DetailFragmentDirections.actionDetailFragmentToShoppingCartFragment(id)
+            findNavController().navigate(action)
+        }
+
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                findNavController().navigate(R.id.action_detailFragment_to_productListingFragment)
+            }
+        })
+    }
     private fun observeBasketUpdates() {
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.sharedViewModel.products.collect { resource ->
@@ -36,31 +61,6 @@ class DetailFragment : BaseFragment<FragmentDetailBinding>(FragmentDetailBinding
             }
         }
     }
-    private var id = ""
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-
-        observeBasketUpdates()
-        setupInitialViews()
-
-        binding.imageCancel.setOnClickListener {
-            hasVisitedShoppingCart = false
-            findNavController().navigate(R.id.action_detailFragment_to_productListingFragment)
-        }
-        binding.basketCustom.setOnBasketClickListener {
-            hasVisitedShoppingCart = true
-            val action = DetailFragmentDirections.actionDetailFragmentToShoppingCartFragment(id)
-            findNavController().navigate(action)
-        }
-
-        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
-            override fun handleOnBackPressed() {
-                findNavController().navigate(R.id.action_detailFragment_to_productListingFragment)
-            }
-        })
-    }
-
     private fun setupInitialViews() {
         arguments?.let {
             val args = DetailFragmentArgs.fromBundle(it)
@@ -120,8 +120,6 @@ class DetailFragment : BaseFragment<FragmentDetailBinding>(FragmentDetailBinding
                         string.append(productEntity.attribute.toString())
                     }
                     textProductAttribute.text = string
-                    //textProductAttribute.text = productEntity.attribute ?: ""
-                    //textProductAttribute.visibility = if (productEntity.attribute.toString().equals("null")) View.INVISIBLE else View.VISIBLE
                 }
             } else {
                 findNavController().popBackStack()
@@ -140,7 +138,6 @@ class DetailFragment : BaseFragment<FragmentDetailBinding>(FragmentDetailBinding
             buttonAddToCart.visibility = if (quantity > 0) View.INVISIBLE else View.VISIBLE
             layoutQuantitySelector.visibility = if (quantity > 0) View.VISIBLE else View.INVISIBLE
             textQuantity.text = quantity.toString()
-
             buttonDecrease.setImageResource(
                 if (quantity > 1) R.drawable.subtract
                 else R.drawable.trash_small
@@ -148,7 +145,4 @@ class DetailFragment : BaseFragment<FragmentDetailBinding>(FragmentDetailBinding
         }
     }
 
-    override fun onResume() {
-        super.onResume()
-    }
 }

@@ -4,14 +4,15 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.animation.AnimationUtils
+import android.widget.Toast
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.constraintlayout.widget.ConstraintSet
 import androidx.navigation.NavController
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.data.models.ProductEntity
 import com.example.getirmultideneme.R
 import com.example.getirmultideneme.databinding.RecyclerRowBasketBinding
-import com.example.getirmultideneme.productlisting.ProductListingFragmentDirections
 import com.example.getirmultideneme.util.Extension.convertToProduct
 
 class ShoppingCartAdapter(
@@ -45,11 +46,24 @@ class ShoppingCartAdapter(
         fun bind(product: ProductEntity) {
             with(binding) {
                 textProductName.text = product.name
-                textProductAttribute.text = product.attribute ?: ""
+
                 textProductPrice.text =
                     String.format("${context.getString(R.string.turkish_lira)}%.2f", product.price)
                 textQuantity.text = product.quantity.toString()
                 Glide.with(imageProduct.context).load(product.imageURL).into(imageProduct)
+
+                val string = StringBuilder()
+                if(product.attribute.toString().equals("null")){
+                    if(!product.description.toString().equals("null")){
+                        string.append(product.description.toString())
+                    }else{
+                        textProductAttribute.visibility = View.GONE
+                    }
+
+                }else{
+                    string.append(product.attribute.toString())
+                }
+                textProductAttribute.text = string
 
                 updateDecreaseButton(product.quantity)
 

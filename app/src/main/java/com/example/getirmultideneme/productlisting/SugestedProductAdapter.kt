@@ -48,13 +48,12 @@ class SuggestedProductAdapter(
                 textViewProductPrice.text = String.format("${context.getString(R.string.turkish_lira)}%.2f", product.price)
                 var str = ""
                 if(product.attribute != null){
-                    Log.e("FLAG","Burada")
                     str = product.attribute.toString()
                 }else if(product.shortDescription != null){
                     str = product.shortDescription.toString()
                 }
                 textViewProductAttribute.text = str
-                Log.e("DEENEME",product.toString())
+
                 Glide.with(itemView.context).load(product.imageURL ?: product.squareThumbnailURL).into(imageViewProduct)
 
                 val currentQuantity = viewModel.getProductQuantity(product.id)

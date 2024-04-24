@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@drawable/alert_custom_bg"
+    android:padding="32dp">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Sepetini boşaltmak istediğinden emin misin?"
+        android:gravity="center"
+        style="@style/ProductTitle"
+        android:textSize="18sp"
+        android:textStyle="bold" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="end"
+        android:layout_marginTop="20dp">
+
+
+        <Button
+            android:id="@+id/dialogNoButton"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="Hayır"
+            android:textAllCaps="false"
+            android:fontFamily="@font/open_sans_semibold"
+            android:background="@drawable/no_button_custom_alert" />
+
+
+        <Space
+            android:layout_width="10dp"
+            android:layout_height="match_parent" />
+
+        <Button
+            android:id="@+id/dialogYesButton"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="Evet"
+            android:textAllCaps="false"
+            android:fontFamily="@font/open_sans_semibold"
+            android:background="@drawable/button_add_basket" />
+
+    </LinearLayout>
+</LinearLayout>
