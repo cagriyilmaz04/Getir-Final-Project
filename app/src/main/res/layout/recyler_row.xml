@@ -138,14 +138,13 @@
         <!-- Product Attribute -->
         <TextView
             android:id="@+id/textViewProductAttribute"
-            android:layout_width="wrap_content"
+            style="@style/ProductAttribute"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/textViewProductName"
             android:layout_alignStart="@id/textViewProductName"
             android:layout_marginTop="4dp"
-            android:text="Product Attribute"
-            style="@style/ProductAttribute"
-             />
+            android:text="Product Attribute" />
 
     </RelativeLayout>
 

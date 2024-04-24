@@ -9,6 +9,7 @@ import com.example.data.models.Product
 import com.example.data.models.ProductEntity
 import com.example.data.models.SuggestedProduct
 import com.example.getirmultideneme.R
+import com.example.getirmultideneme.customview.BasketCustomView
 
 object Extension {
     var hasVisitedShoppingCart = false
@@ -69,4 +70,41 @@ object Extension {
         view.startAnimation(fadeOutAnimation)
         view.visibility = View.GONE
     }
+
+    private var isAnimating = false
+    fun updateBasketPriceWithAnimation(newPrice: Double,basketCustomView: BasketCustomView) {
+        if (isAnimating) return
+
+        val imageView = basketCustomView.getImage()
+        val constraintLayout = basketCustomView.getConstraint()
+        constraintLayout.post {
+            val originalX = imageView.x
+            val originalY = imageView.y
+            isAnimating = true
+            // Animasyonu başlat
+            imageView.animate()
+                .x(constraintLayout.x)
+                .y(constraintLayout.y)
+                .setDuration(500)
+                .withStartAction {
+                    constraintLayout.visibility = View.INVISIBLE
+                }
+                .withEndAction {
+                    // Yeni fiyatı güncelle ve animasyonu geri döndür
+                    basketCustomView.setPrice(newPrice)
+                    imageView.animate()
+                        .x(originalX)
+                        .y(originalY)
+                        .setDuration(500)
+                        .withEndAction {
+                            isAnimating = false
+                            constraintLayout.visibility = View.VISIBLE
+                        }
+                        .start()
+                }
+                .start()
+        }
+    }
+
+
 }

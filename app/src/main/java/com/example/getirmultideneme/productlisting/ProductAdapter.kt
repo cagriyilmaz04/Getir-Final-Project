@@ -47,7 +47,16 @@ class ProductAdapter(
         fun bind(product: Product) {
             binding.apply {
                 textViewProductName.text = product.name
-                textViewProductAttribute.text = product.attribute
+                var str = product.attribute.toString()
+                if(product.attribute != null){
+                    str = product.attribute.toString()
+                }else if(product.description != null){
+                    str = product.description.toString()
+                }else {
+                    textViewProductAttribute.visibility = View.INVISIBLE
+                }
+                textViewProductAttribute.text = str
+                Log.e("TAG",product.toString())
                 textViewProductPrice.text = String.format("${context.getString(R.string.turkish_lira)}%.2f", product.price)
                 Glide.with(itemView.context).load(product.imageURL).into(imageViewProduct)
 
@@ -93,7 +102,7 @@ class ProductAdapter(
                 }
 
                 imageViewContainer.setOnClickListener {
-                    val action = ProductListingFragmentDirections.actionProductListingFragmentToDetailFragment(product)
+                    val action = ProductListingFragmentDirections.actionProductListingFragmentToDetailFragment(product, binding.textQuantity.text.toString().toInt())
                     navController.navigate(action)
                 }
             }

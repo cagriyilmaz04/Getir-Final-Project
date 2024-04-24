@@ -61,7 +61,7 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvSuggestedProducts"
         android:layout_width="match_parent"
-        android:layout_height="220dp"
+        android:layout_height="240dp"
         android:layout_alignParentTop="true"
         android:layout_marginTop="32dp"
         android:background="#FFFFFF"
@@ -80,20 +80,23 @@
     <com.facebook.shimmer.ShimmerFrameLayout
         android:id="@+id/rvShimmerHorizontal"
         android:layout_width="match_parent"
-        android:layout_height="220dp"
+        android:layout_height="240dp"
         android:layout_marginTop="32dp"
-        app:layout_constraintTop_toBottomOf="@id/constraintLayout"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
         android:paddingStart="16dp"
-        android:paddingEnd="16dp">
+        android:paddingEnd="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/constraintLayout">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
+
             <include layout="@layout/shimmer_recycler_row" />
+
             <include layout="@layout/shimmer_recycler_row" />
+
             <include layout="@layout/shimmer_recycler_row" />
         </LinearLayout>
     </com.facebook.shimmer.ShimmerFrameLayout>

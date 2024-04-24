@@ -19,8 +19,9 @@ class SharedViewModel @Inject constructor(
     val products: StateFlow<Resource<List<ProductEntity>>> = _products.asStateFlow()
 
     init {
-        getAllProducts()  // Veritabanından tüm ürünleri yükle
+        getAllProducts()
     }
+
 
     fun addProductToCart(product: ProductEntity) {
         viewModelScope.launch {

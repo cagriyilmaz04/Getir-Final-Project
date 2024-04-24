@@ -28,7 +28,7 @@ class DetailViewModel @Inject constructor(
         product = product?.let {
             val updatedProduct = it.copy(quantity = if (increase) it.quantity + 1 else Math.max(0, it.quantity - 1))
             sharedViewModel.updateQuantity(updatedProduct, increase)
-            updatedProduct  // Return the updated product
+            updatedProduct
         }
     }
 

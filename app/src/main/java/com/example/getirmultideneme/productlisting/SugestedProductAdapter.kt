@@ -1,6 +1,7 @@
 package com.example.getirmultideneme.productlisting
 
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewAnimationUtils
@@ -45,8 +46,15 @@ class SuggestedProductAdapter(
             binding.apply {
                 textViewProductName.text = product.name
                 textViewProductPrice.text = String.format("${context.getString(R.string.turkish_lira)}%.2f", product.price)
-                textViewProductAttribute.visibility = if (product.attribute.isNullOrEmpty()) View.GONE else View.VISIBLE
-                textViewProductAttribute.text = product.attribute
+                var str = ""
+                if(product.attribute != null){
+                    Log.e("FLAG","Burada")
+                    str = product.attribute.toString()
+                }else if(product.shortDescription != null){
+                    str = product.shortDescription.toString()
+                }
+                textViewProductAttribute.text = str
+                Log.e("DEENEME",product.toString())
                 Glide.with(itemView.context).load(product.imageURL ?: product.squareThumbnailURL).into(imageViewProduct)
 
                 val currentQuantity = viewModel.getProductQuantity(product.id)
@@ -57,6 +65,7 @@ class SuggestedProductAdapter(
                 csImageViewAdd.visibility = if (isInCart) View.GONE else View.VISIBLE
                 layoutQuantitySelector.visibility = if (isInCart) View.VISIBLE else View.GONE
                 cardViewQuantitySelector.visibility = if (isInCart) View.VISIBLE else View.GONE
+
                 if (!isInCart) {
                     csImageViewAdd.setOnClickListener {
                         textQuantity.text = "1"
@@ -65,17 +74,20 @@ class SuggestedProductAdapter(
                         cardViewQuantitySelector.visibility = View.VISIBLE
                         viewModel.addToCart(Extension.convertToProductSuggestedToEntity(product))
                         updateDecreaseButtonIcon(1)
-                        constraintLayoutProductImage.setBackgroundResource(R.drawable.constraint_background_transition)
-                        val cx = constraintLayoutProductImage.width
+                        imageViewBackground.setBackgroundResource(R.drawable.constraint_background_transition)
+                        val cx = imageViewBackground.width
                         val cy = 0
 
-                        val finalRadius = Math.hypot(cx.toDouble(), constraintLayoutProductImage.height.toDouble()).toFloat()
+                        val finalRadius = Math.hypot(cx.toDouble(), imageViewBackground.height.toDouble()).toFloat()
 
-                        val reveal = ViewAnimationUtils.createCircularReveal(constraintLayoutProductImage, cx, cy, 0f, finalRadius)
+                        val reveal = ViewAnimationUtils.createCircularReveal(imageViewBackground, cx, cy, 0f, finalRadius)
                         reveal.duration = 600
                         reveal.start()
-                        constraintLayoutProductImage.setBackgroundResource(R.drawable.constraint_background_transition)
+                        imageViewBackground.setBackgroundResource(R.drawable.constraint_background_transition)
                     }
+                }else{
+                    imageViewBackground.setBackgroundResource(R.drawable.constraint_background_transition)
+
                 }
 
                 buttonIncrease.setOnClickListener {
@@ -87,7 +99,7 @@ class SuggestedProductAdapter(
                 }
 
                 imageViewContainer.setOnClickListener {
-                    val action = ProductListingFragmentDirections.actionProductListingFragmentToDetailFragment(Extension.convertToProduct(product))
+                    val action = ProductListingFragmentDirections.actionProductListingFragmentToDetailFragment(Extension.convertToProduct(product),binding.textQuantity.text.toString().toInt())
                     navController.navigate(action)
                 }
             }
@@ -101,7 +113,7 @@ class SuggestedProductAdapter(
             if (newQuantity == 0) {
                 Extension.fadeInView(binding.csImageViewAdd, context)
                 Extension.fadeOutView(binding.layoutQuantitySelector, context)
-                binding.constraintLayoutProductImage.setBackgroundResource(R.drawable.bg_last_product_image)
+                binding.imageViewBackground.setBackgroundResource(R.drawable.bg_last_product_image)
             } else {
                 binding.textQuantity.text = newQuantity.toString()
                 binding.csImageViewAdd.visibility = View.GONE

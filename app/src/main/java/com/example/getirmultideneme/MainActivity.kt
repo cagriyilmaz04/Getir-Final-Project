@@ -16,9 +16,5 @@ class MainActivity : AppCompatActivity() {
 
         setStausBar(this,R.color.text_primary)
 
-
-
     }
-
-
-    }
+}

@@ -36,12 +36,11 @@ class ShoppingCartFragment : BaseFragment<FragmentShoppingCartBinding>
             findNavController().popBackStack()
         }
         binding.imageDelete.setOnClickListener {
-            hasVisitedShoppingCart = true
             viewModel.deleteAllProducts()
+                findNavController().navigate(R.id.action_shoppingCartFragment_to_productListingFragment)
         }
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
-                // This will be called when the system back button is pressed
                 hasVisitedShoppingCart = false
                 findNavController().popBackStack()
             }
